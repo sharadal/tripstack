@@ -60,6 +60,13 @@ export default function Home() {
                   </li>
                 ))}
               </ul>
+
+              <div className="mt-4 border-t border-slate-100 pt-3">
+                <span className="inline-flex items-center gap-1 text-sm font-medium text-sky-700">
+                  View trip
+                  <span aria-hidden="true">→</span>
+                </span>
+              </div>
             </Link>
           ))}
         </div>
