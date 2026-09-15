@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { trips, formatDate } from "@/lib/trips";
 import CountdownBadge from "@/components/CountdownBadge";
@@ -5,20 +6,32 @@ import CountdownBadge from "@/components/CountdownBadge";
 export default function Home() {
   return (
     <main className="flex-1 bg-slate-50">
-      <section className="bg-slate-900 px-6 py-16 text-center text-white">
-        <h1 className="text-3xl font-bold sm:text-4xl">
-          Every trip, organised in one place
-        </h1>
-        <p className="mx-auto mt-4 max-w-xl text-slate-300">
-          Destinations, dates, and activities — all together, so you can plan
-          with confidence.
-        </p>
-        <Link
-          href="/trips/new"
-          className="mt-8 inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-        >
-          Plan a new trip
-        </Link>
+      <section className="relative overflow-hidden px-6 py-16 text-center text-white">
+        <Image
+          src="/images/hero-travel.jpg"
+          alt="Calm mountain lake, a scenic travel destination"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/80 via-teal-950/70 to-slate-900/85" />
+
+        <div className="relative">
+          <h1 className="text-3xl font-bold sm:text-4xl">
+            Every trip, organised in one place
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl text-slate-200">
+            Destinations, dates, and activities — all together, so you can
+            plan with confidence.
+          </p>
+          <Link
+            href="/trips/new"
+            className="mt-8 inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          >
+            Plan a new trip
+          </Link>
+        </div>
       </section>
 
       <section className="mx-auto max-w-5xl px-6 py-12">
