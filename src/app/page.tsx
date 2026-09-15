@@ -38,6 +38,40 @@ function formatDate(dateString: string) {
   });
 }
 
+function daysUntil(dateString: string) {
+  const msPerDay = 1000 * 60 * 60 * 24;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const target = new Date(dateString);
+  return Math.round((target.getTime() - today.getTime()) / msPerDay);
+}
+
+function CountdownBadge({ startDate }: { startDate: string }) {
+  const days = daysUntil(startDate);
+
+  if (days < 0) {
+    return (
+      <span className="inline-block rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-500">
+        Past trip
+      </span>
+    );
+  }
+
+  if (days === 0) {
+    return (
+      <span className="inline-block rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-700">
+        Starts today
+      </span>
+    );
+  }
+
+  return (
+    <span className="inline-block rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-700">
+      In {days} day{days === 1 ? "" : "s"}
+    </span>
+  );
+}
+
 export default function Home() {
   return (
     <main className="flex-1 bg-slate-50">
@@ -60,9 +94,12 @@ export default function Home() {
               key={trip.id}
               className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
             >
-              <h3 className="text-lg font-semibold text-slate-900">
-                {trip.destination}
-              </h3>
+              <div className="flex items-start justify-between gap-2">
+                <h3 className="text-lg font-semibold text-slate-900">
+                  {trip.destination}
+                </h3>
+                <CountdownBadge startDate={trip.startDate} />
+              </div>
               <p className="mt-1 text-sm text-slate-500">
                 {formatDate(trip.startDate)} – {formatDate(trip.endDate)}
               </p>
