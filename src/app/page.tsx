@@ -6,16 +6,18 @@ export default function Home() {
   return (
     <main className="flex-1 bg-slate-50">
       <section className="bg-slate-900 px-6 py-16 text-center text-white">
-        <h1 className="text-4xl font-bold sm:text-5xl">TripStack</h1>
+        <h1 className="text-3xl font-bold sm:text-4xl">
+          Every trip, organised in one place
+        </h1>
         <p className="mx-auto mt-4 max-w-xl text-slate-300">
-          Organise every trip in one place — destinations, dates, and
-          activities, all together.
+          Destinations, dates, and activities — all together, so you can plan
+          with confidence.
         </p>
       </section>
 
       <section className="mx-auto max-w-5xl px-6 py-12">
         <h2 className="mb-6 text-2xl font-semibold text-slate-900">
-          Upcoming trips
+          Upcoming
         </h2>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
