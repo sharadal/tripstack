@@ -4,6 +4,8 @@ type Trip = {
   startDate: string;
   endDate: string;
   activities: string[];
+  budget: string;
+  travelStyle: string;
 };
 
 const trips: Trip[] = [
@@ -13,6 +15,8 @@ const trips: Trip[] = [
     startDate: "2026-10-12",
     endDate: "2026-10-19",
     activities: ["Walking tour", "Belem Tower", "Day trip to Sintra"],
+    budget: "$1,200",
+    travelStyle: "City break",
   },
   {
     id: 2,
@@ -20,6 +24,8 @@ const trips: Trip[] = [
     startDate: "2027-03-02",
     endDate: "2027-03-10",
     activities: ["Fushimi Inari shrine", "Tea ceremony", "Bamboo grove hike"],
+    budget: "$2,800",
+    travelStyle: "Culture",
   },
   {
     id: 3,
@@ -27,6 +33,8 @@ const trips: Trip[] = [
     startDate: "2027-01-15",
     endDate: "2027-01-22",
     activities: ["Table Mountain", "Boulders Beach penguins", "Wine tasting"],
+    budget: "$2,100",
+    travelStyle: "Adventure",
   },
 ];
 
@@ -103,6 +111,15 @@ export default function Home() {
               <p className="mt-1 text-sm text-slate-500">
                 {formatDate(trip.startDate)} – {formatDate(trip.endDate)}
               </p>
+
+              <div className="mt-3 flex flex-wrap gap-2">
+                <span className="inline-block rounded-full bg-sky-100 px-3 py-1 text-xs font-medium text-sky-700">
+                  {trip.travelStyle}
+                </span>
+                <span className="inline-block rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+                  Budget: {trip.budget}
+                </span>
+              </div>
 
               <ul className="mt-4 space-y-1 text-sm text-slate-600">
                 {trip.activities.map((activity) => (
