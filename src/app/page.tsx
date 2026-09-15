@@ -13,6 +13,12 @@ export default function Home() {
           Destinations, dates, and activities — all together, so you can plan
           with confidence.
         </p>
+        <Link
+          href="/trips/new"
+          className="mt-8 inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        >
+          Plan a new trip
+        </Link>
       </section>
 
       <section className="mx-auto max-w-5xl px-6 py-12">
