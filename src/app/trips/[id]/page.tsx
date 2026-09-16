@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { trips, getTripById, formatDate } from "@/lib/trips";
+import { trips, getTripById, formatDate, formatCurrency } from "@/lib/trips";
 import CountdownBadge from "@/components/CountdownBadge";
 
 export function generateStaticParams() {
@@ -45,7 +45,7 @@ export default async function TripDetail({
             {trip.travelStyle}
           </span>
           <span className="inline-block rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
-            Budget: {trip.budget}
+            Budget: {formatCurrency(trip.budget)}
           </span>
         </div>
 

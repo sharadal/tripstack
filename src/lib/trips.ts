@@ -4,7 +4,8 @@ export type Trip = {
   startDate: string;
   endDate: string;
   activities: string[];
-  budget: string;
+  budget: number;
+  spent: number;
   travelStyle: string;
 };
 
@@ -15,7 +16,8 @@ export const trips: Trip[] = [
     startDate: "2026-10-12",
     endDate: "2026-10-19",
     activities: ["Walking tour", "Belem Tower", "Day trip to Sintra"],
-    budget: "$1,200",
+    budget: 1200,
+    spent: 300,
     travelStyle: "City break",
   },
   {
@@ -24,7 +26,8 @@ export const trips: Trip[] = [
     startDate: "2027-03-02",
     endDate: "2027-03-10",
     activities: ["Fushimi Inari shrine", "Tea ceremony", "Bamboo grove hike"],
-    budget: "$2,800",
+    budget: 2800,
+    spent: 500,
     travelStyle: "Culture",
   },
   {
@@ -33,7 +36,8 @@ export const trips: Trip[] = [
     startDate: "2027-01-15",
     endDate: "2027-01-22",
     activities: ["Table Mountain", "Boulders Beach penguins", "Wine tasting"],
-    budget: "$2,100",
+    budget: 2100,
+    spent: 400,
     travelStyle: "Adventure",
   },
 ];
@@ -56,4 +60,12 @@ export function daysUntil(dateString: string) {
   today.setHours(0, 0, 0, 0);
   const target = new Date(dateString);
   return Math.round((target.getTime() - today.getTime()) / msPerDay);
+}
+
+export function formatCurrency(amount: number) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(amount);
 }
