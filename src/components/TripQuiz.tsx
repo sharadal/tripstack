@@ -59,16 +59,16 @@ export default function TripQuiz({ trips }: { trips: Trip[] }) {
   const result = isResult ? quizResults[winner] : null;
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-shadow duration-300 hover:shadow-md md:grid md:grid-cols-2">
+    <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-shadow duration-300 hover:shadow-md md:grid md:grid-cols-2 dark:border-slate-800 dark:bg-slate-900">
       <div className="p-8 sm:p-10">
-        <p className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.2em] text-orange-700 uppercase">
+        <p className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.2em] text-orange-700 uppercase dark:text-orange-400">
           <SparkleIcon className="h-3.5 w-3.5" />
           Two-minute quiz
         </p>
-        <h2 className="mt-3 font-serif text-3xl font-bold text-slate-900">
+        <h2 className="mt-3 font-serif text-3xl font-bold text-slate-900 dark:text-slate-50">
           What kind of trip are you due?
         </h2>
-        <p className="mt-3 text-slate-600">
+        <p className="mt-3 text-slate-600 dark:text-slate-300">
           Four questions, one honest answer about the sort of break you
           actually need — plus a trip from your stack that fits it.
         </p>
@@ -79,10 +79,10 @@ export default function TripQuiz({ trips }: { trips: Trip[] }) {
               key={index}
               className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${
                 isResult || index < step
-                  ? "bg-teal-950"
+                  ? "bg-teal-950 dark:bg-teal-400"
                   : index === step
                     ? "bg-orange-500"
-                    : "bg-stone-200"
+                    : "bg-stone-200 dark:bg-slate-700"
               }`}
             />
           ))}
@@ -90,7 +90,7 @@ export default function TripQuiz({ trips }: { trips: Trip[] }) {
 
         {question && (
           <div className="mt-8">
-            <h3 className="text-lg font-semibold text-slate-900">
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
               {question.prompt}
             </h3>
             <div className="mt-4 flex flex-col gap-3">
@@ -99,7 +99,7 @@ export default function TripQuiz({ trips }: { trips: Trip[] }) {
                   key={option.label}
                   type="button"
                   onClick={() => handleAnswer(option.scores)}
-                  className="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-left text-slate-900 transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-300 hover:bg-orange-50 hover:shadow-sm"
+                  className="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-left text-slate-900 transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-300 hover:bg-orange-50 hover:shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:border-orange-400 dark:hover:bg-orange-950/30"
                 >
                   {option.label}
                 </button>
@@ -110,11 +110,11 @@ export default function TripQuiz({ trips }: { trips: Trip[] }) {
 
         {result && (
           <div className="animate-fade-in-up mt-8">
-            <h3 className="flex items-center gap-2 font-serif text-2xl font-bold text-slate-900">
+            <h3 className="flex items-center gap-2 font-serif text-2xl font-bold text-slate-900 dark:text-slate-50">
               <SparkleIcon className="h-5 w-5 text-amber-400" />
               {result.title}
             </h3>
-            <p className="mt-3 text-slate-600">{result.blurb}</p>
+            <p className="mt-3 text-slate-600 dark:text-slate-300">{result.blurb}</p>
 
             <div className="mt-6 flex flex-wrap items-center gap-4">
               {matchingTrip ? (
@@ -137,7 +137,7 @@ export default function TripQuiz({ trips }: { trips: Trip[] }) {
               <button
                 type="button"
                 onClick={handleReset}
-                className="text-sm font-medium text-slate-500 transition hover:text-teal-900"
+                className="text-sm font-medium text-slate-500 transition hover:text-teal-900 dark:text-slate-400 dark:hover:text-amber-300"
               >
                 Take it again
               </button>

@@ -17,37 +17,37 @@ export type TravelStyleMeta = {
 const STYLE_META: Record<string, TravelStyleMeta> = {
   beach: {
     icon: SunIcon,
-    badgeClass: "bg-amber-50 text-amber-900",
+    badgeClass: "bg-amber-50 text-amber-900 dark:bg-amber-500/15 dark:text-amber-300",
     iconClass: "text-amber-500",
     barClass: "from-amber-400 to-amber-500",
   },
   city: {
     icon: BuildingIcon,
-    badgeClass: "bg-orange-50 text-orange-900",
+    badgeClass: "bg-orange-50 text-orange-900 dark:bg-orange-500/15 dark:text-orange-300",
     iconClass: "text-orange-500",
     barClass: "from-orange-400 to-orange-500",
   },
   mountain: {
     icon: MountainIcon,
-    badgeClass: "bg-teal-50 text-teal-900",
+    badgeClass: "bg-teal-50 text-teal-900 dark:bg-teal-500/15 dark:text-teal-300",
     iconClass: "text-teal-600",
     barClass: "from-teal-600 to-teal-700",
   },
   culture: {
     icon: LandmarkIcon,
-    badgeClass: "bg-rose-50 text-rose-900",
+    badgeClass: "bg-rose-50 text-rose-900 dark:bg-rose-500/15 dark:text-rose-300",
     iconClass: "text-rose-500",
     barClass: "from-rose-400 to-rose-500",
   },
   road: {
     icon: CompassIcon,
-    badgeClass: "bg-yellow-50 text-yellow-900",
+    badgeClass: "bg-yellow-50 text-yellow-900 dark:bg-yellow-500/15 dark:text-yellow-300",
     iconClass: "text-yellow-500",
     barClass: "from-yellow-400 to-yellow-500",
   },
   adventure: {
     icon: CompassIcon,
-    badgeClass: "bg-orange-50 text-orange-900",
+    badgeClass: "bg-orange-50 text-orange-900 dark:bg-orange-500/15 dark:text-orange-300",
     iconClass: "text-orange-600",
     barClass: "from-orange-500 to-rose-500",
   },
@@ -55,7 +55,7 @@ const STYLE_META: Record<string, TravelStyleMeta> = {
 
 const DEFAULT_META: TravelStyleMeta = {
   icon: CompassIcon,
-  badgeClass: "bg-teal-50 text-teal-900",
+  badgeClass: "bg-teal-50 text-teal-900 dark:bg-teal-500/15 dark:text-teal-300",
   iconClass: "text-teal-600",
   barClass: "from-teal-600 to-teal-700",
 };

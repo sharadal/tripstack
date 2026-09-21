@@ -4,11 +4,11 @@ import NewTripForm from "./NewTripForm";
 
 export default function NewTrip() {
   return (
-    <main className="flex-1 bg-stone-50">
+    <main className="flex-1 bg-stone-50 dark:bg-slate-950">
       <section className="mx-auto max-w-2xl px-6 py-12">
         <Link
           href="/#upcoming"
-          className="inline-flex items-center gap-1 text-sm font-medium text-slate-500 transition hover:text-teal-900"
+          className="inline-flex items-center gap-1 text-sm font-medium text-slate-500 transition hover:text-teal-900 dark:text-slate-400 dark:hover:text-amber-300"
         >
           ← Back to trips
         </Link>
@@ -17,10 +17,10 @@ export default function NewTrip() {
           <PlaneIcon className="h-5 w-5 -rotate-45" />
         </span>
 
-        <h1 className="mt-4 font-serif text-3xl font-bold text-slate-900">
+        <h1 className="mt-4 font-serif text-3xl font-bold text-slate-900 dark:text-slate-50">
           Plan a new trip
         </h1>
-        <p className="mt-2 text-slate-600">
+        <p className="mt-2 text-slate-600 dark:text-slate-300">
           Fill in what you know — you can keep the rest loose for now.
         </p>
 

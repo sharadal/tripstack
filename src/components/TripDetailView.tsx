@@ -16,7 +16,7 @@ export default function TripDetailView({ trip }: { trip: Trip }) {
   const StyleIcon = meta.icon;
 
   return (
-    <main className="flex-1 bg-stone-50">
+    <main className="flex-1 bg-stone-50 dark:bg-slate-950">
       <div className="relative h-64 w-full sm:h-80">
         {trip.image.startsWith("/") ? (
           <Image
@@ -47,21 +47,21 @@ export default function TripDetailView({ trip }: { trip: Trip }) {
       <section className="mx-auto max-w-2xl px-6 py-12">
         <Link
           href="/#upcoming"
-          className="inline-flex items-center gap-1 text-sm font-medium text-slate-500 transition hover:text-teal-900"
+          className="inline-flex items-center gap-1 text-sm font-medium text-slate-500 transition hover:text-teal-900 dark:text-slate-400 dark:hover:text-amber-300"
         >
           ← Back to trips
         </Link>
 
-        <h1 className="mt-4 font-serif text-3xl font-bold text-slate-900">
+        <h1 className="mt-4 font-serif text-3xl font-bold text-slate-900 dark:text-slate-50">
           {trip.destination}
         </h1>
 
-        <p className="mt-2 text-slate-500">
+        <p className="mt-2 text-slate-500 dark:text-slate-400">
           {formatDate(trip.startDate)} – {formatDate(trip.endDate)} ·{" "}
           {getNights(trip)} nights
         </p>
 
-        <p className="mt-4 text-slate-600">{trip.description}</p>
+        <p className="mt-4 text-slate-600 dark:text-slate-300">{trip.description}</p>
 
         <div className="mt-4 flex flex-wrap gap-2">
           <span
@@ -72,14 +72,14 @@ export default function TripDetailView({ trip }: { trip: Trip }) {
           </span>
         </div>
 
-        <h2 className="mt-8 text-lg font-semibold text-slate-900">
+        <h2 className="mt-8 text-lg font-semibold text-slate-900 dark:text-slate-50">
           Activities
         </h2>
         <div className="mt-3 flex flex-wrap gap-2">
           {trip.activities.map((activity) => (
             <span
               key={activity}
-              className="inline-block rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-900"
+              className="inline-block rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-900 dark:bg-amber-500/15 dark:text-amber-300"
             >
               {activity}
             </span>
@@ -88,14 +88,14 @@ export default function TripDetailView({ trip }: { trip: Trip }) {
 
         {trip.packingList && trip.packingList.length > 0 && (
           <>
-            <h2 className="mt-8 text-lg font-semibold text-slate-900">
+            <h2 className="mt-8 text-lg font-semibold text-slate-900 dark:text-slate-50">
               Packing list
             </h2>
             <div className="mt-3 flex flex-wrap gap-2">
               {trip.packingList.map((item) => (
                 <span
                   key={item}
-                  className="inline-block rounded-full bg-white px-3 py-1 text-xs font-medium text-slate-900 shadow-sm"
+                  className="inline-block rounded-full bg-white px-3 py-1 text-xs font-medium text-slate-900 shadow-sm dark:bg-slate-800 dark:text-slate-100"
                 >
                   {item}
                 </span>
@@ -106,28 +106,28 @@ export default function TripDetailView({ trip }: { trip: Trip }) {
 
         {trip.notes && (
           <>
-            <h2 className="mt-8 text-lg font-semibold text-slate-900">
+            <h2 className="mt-8 text-lg font-semibold text-slate-900 dark:text-slate-50">
               Notes
             </h2>
-            <p className="mt-3 text-slate-600">{trip.notes}</p>
+            <p className="mt-3 text-slate-600 dark:text-slate-300">{trip.notes}</p>
           </>
         )}
 
-        <h2 className="mt-8 flex items-center gap-2 text-lg font-semibold text-slate-900">
-          <WalletIcon className="h-5 w-5 text-teal-700" />
+        <h2 className="mt-8 flex items-center gap-2 text-lg font-semibold text-slate-900 dark:text-slate-50">
+          <WalletIcon className="h-5 w-5 text-teal-700 dark:text-teal-400" />
           Budget
         </h2>
-        <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between text-sm text-slate-600">
+        <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex items-center justify-between text-sm text-slate-600 dark:text-slate-300">
             <span>
               {formatCurrency(trip.spent)} of {formatCurrency(trip.budget)}{" "}
               committed
             </span>
-            <span className="font-semibold text-orange-700">
+            <span className="font-semibold text-orange-700 dark:text-orange-400">
               {percentSpent}%
             </span>
           </div>
-          <div className="mt-2 h-2 w-full rounded-full bg-slate-100">
+          <div className="mt-2 h-2 w-full rounded-full bg-slate-100 dark:bg-slate-800">
             <div
               className="h-2 rounded-full bg-gradient-to-r from-orange-400 to-orange-600"
               style={{ width: `${percentSpent}%` }}

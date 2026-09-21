@@ -19,7 +19,7 @@ export default function Footer() {
   return (
     <footer className="relative overflow-hidden bg-teal-950 text-stone-200">
       <svg
-        className="absolute inset-x-0 -top-1 h-10 w-full text-stone-50 sm:h-14"
+        className="absolute inset-x-0 -top-1 h-10 w-full text-stone-50 sm:h-14 dark:text-slate-950"
         viewBox="0 0 1440 74"
         preserveAspectRatio="none"
         fill="currentColor"

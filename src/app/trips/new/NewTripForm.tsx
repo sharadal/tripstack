@@ -9,7 +9,7 @@ import { addPersonalTrip } from "@/lib/personalTrips";
 import { PlaneIcon } from "@/components/icons";
 
 const inputClass =
-  "w-full rounded-full border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition focus:border-orange-400 focus:outline-none focus:ring-1 focus:ring-orange-400";
+  "w-full rounded-full border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition focus:border-orange-400 focus:outline-none focus:ring-1 focus:ring-orange-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:placeholder-slate-500";
 
 function TagList({
   label,
@@ -40,7 +40,7 @@ function TagList({
     <div>
       <label
         htmlFor={inputId}
-        className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+        className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase dark:text-slate-400"
       >
         {label}
       </label>
@@ -62,7 +62,7 @@ function TagList({
         <button
           type="button"
           onClick={submitValue}
-          className="shrink-0 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-700 transition hover:-translate-y-0.5 hover:border-orange-300 hover:text-orange-700"
+          className="shrink-0 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-700 transition hover:-translate-y-0.5 hover:border-orange-300 hover:text-orange-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-orange-400 dark:hover:text-orange-300"
         >
           Add
         </button>
@@ -73,14 +73,14 @@ function TagList({
           {items.map((item, index) => (
             <span
               key={`${item}-${index}`}
-              className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-900"
+              className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-900 dark:bg-amber-500/15 dark:text-amber-300"
             >
               {item}
               <button
                 type="button"
                 onClick={() => onRemove(index)}
                 aria-label={`Remove ${item}`}
-                className="inline-block text-amber-700 transition-transform duration-150 hover:scale-125 hover:text-amber-950"
+                className="inline-block text-amber-700 transition-transform duration-150 hover:scale-125 hover:text-amber-950 dark:text-amber-300 dark:hover:text-amber-100"
               >
                 ×
               </button>
@@ -153,13 +153,13 @@ export default function NewTripForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mt-6 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm"
+      className="mt-6 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900"
     >
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
           <label
             htmlFor="destination"
-            className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+            className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase dark:text-slate-400"
           >
             Destination
           </label>
@@ -175,7 +175,7 @@ export default function NewTripForm() {
         <div>
           <label
             htmlFor="country"
-            className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+            className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase dark:text-slate-400"
           >
             Country
           </label>
@@ -192,7 +192,7 @@ export default function NewTripForm() {
         <div>
           <label
             htmlFor="startDate"
-            className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+            className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase dark:text-slate-400"
           >
             Start date
           </label>
@@ -207,7 +207,7 @@ export default function NewTripForm() {
         <div>
           <label
             htmlFor="endDate"
-            className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+            className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase dark:text-slate-400"
           >
             End date
           </label>
@@ -222,7 +222,7 @@ export default function NewTripForm() {
       </div>
 
       <div className="mt-6">
-        <label className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase">
+        <label className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase dark:text-slate-400">
           Trip type
         </label>
         <div className="mt-2 flex flex-wrap gap-2">
@@ -240,7 +240,7 @@ export default function NewTripForm() {
                 className={`inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 ${
                   isActive
                     ? "bg-teal-950 text-white shadow-sm"
-                    : "border border-slate-200 bg-white text-slate-600 hover:border-orange-300 hover:text-orange-700"
+                    : "border border-slate-200 bg-white text-slate-600 hover:border-orange-300 hover:text-orange-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-orange-400 dark:hover:text-orange-300"
                 }`}
               >
                 <Icon
@@ -257,7 +257,7 @@ export default function NewTripForm() {
         <div>
           <label
             htmlFor="budget"
-            className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+            className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase dark:text-slate-400"
           >
             Budget (EUR)
           </label>
@@ -274,7 +274,7 @@ export default function NewTripForm() {
         <div>
           <label
             htmlFor="image"
-            className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+            className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase dark:text-slate-400"
           >
             Cover photo link (optional)
           </label>
@@ -291,7 +291,7 @@ export default function NewTripForm() {
       <div className="mt-6">
         <label
           htmlFor="description"
-          className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+          className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase dark:text-slate-400"
         >
           Short summary
         </label>
@@ -333,7 +333,7 @@ export default function NewTripForm() {
       <div className="mt-6">
         <label
           htmlFor="notes"
-          className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+          className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase dark:text-slate-400"
         >
           Notes
         </label>
@@ -347,10 +347,10 @@ export default function NewTripForm() {
       </div>
 
       {error && (
-        <p className="mt-6 text-sm font-medium text-red-600">{error}</p>
+        <p className="mt-6 text-sm font-medium text-red-600 dark:text-red-400">{error}</p>
       )}
 
-      <div className="mt-8 flex items-center gap-4 border-t border-slate-100 pt-6">
+      <div className="mt-8 flex items-center gap-4 border-t border-slate-100 pt-6 dark:border-slate-800">
         <button
           type="submit"
           disabled={pending}
@@ -361,7 +361,7 @@ export default function NewTripForm() {
         </button>
         <Link
           href="/#upcoming"
-          className="text-sm font-medium text-slate-500 transition hover:text-teal-900"
+          className="text-sm font-medium text-slate-500 transition hover:text-teal-900 dark:text-slate-400 dark:hover:text-amber-300"
         >
           Cancel
         </Link>

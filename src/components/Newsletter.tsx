@@ -6,7 +6,7 @@ import { PlaneIcon, SparkleIcon } from "@/components/icons";
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const inputClass =
-  "mt-2 w-full rounded-full border bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition focus:outline-none focus:ring-1";
+  "mt-2 w-full rounded-full border bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition focus:outline-none focus:ring-1 dark:bg-slate-800 dark:text-slate-50 dark:placeholder-slate-500";
 
 type Errors = {
   firstName?: string;
@@ -46,21 +46,21 @@ export default function Newsletter() {
 
   if (submitted) {
     return (
-      <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm sm:p-10">
+      <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm sm:p-10 dark:border-slate-800 dark:bg-slate-900">
         <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-teal-950 text-white">
           <SparkleIcon className="h-5 w-5 text-amber-300" />
         </span>
-        <h2 className="mt-4 font-serif text-2xl font-bold text-slate-900">
+        <h2 className="mt-4 font-serif text-2xl font-bold text-slate-900 dark:text-slate-50">
           You&apos;re on the list!
         </h2>
-        <p className="mx-auto mt-2 max-w-sm text-slate-600">
+        <p className="mx-auto mt-2 max-w-sm text-slate-600 dark:text-slate-300">
           Thanks for subscribing — keep an eye on your inbox for travel
           ideas and trip-planning tips.
         </p>
         <button
           type="button"
           onClick={() => setSubmitted(false)}
-          className="mt-6 text-sm font-medium text-slate-500 transition hover:text-teal-900"
+          className="mt-6 text-sm font-medium text-slate-500 transition hover:text-teal-900 dark:text-slate-400 dark:hover:text-amber-300"
         >
           Subscribe another email
         </button>
@@ -69,16 +69,16 @@ export default function Newsletter() {
   }
 
   return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
+    <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10 dark:border-slate-800 dark:bg-slate-900">
       <div className="mx-auto max-w-xl text-center">
-        <p className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.2em] text-orange-700 uppercase">
+        <p className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.2em] text-orange-700 uppercase dark:text-orange-400">
           <SparkleIcon className="h-3.5 w-3.5" />
           Stay in the loop
         </p>
-        <h2 className="mt-3 font-serif text-3xl font-bold text-slate-900">
+        <h2 className="mt-3 font-serif text-3xl font-bold text-slate-900 dark:text-slate-50">
           Travel ideas, straight to your inbox
         </h2>
-        <p className="mt-3 text-slate-600">
+        <p className="mt-3 text-slate-600 dark:text-slate-300">
           One email a month with destination ideas, packing tips and the
           occasional nudge to finally book that trip.
         </p>
@@ -93,7 +93,7 @@ export default function Newsletter() {
           <div>
             <label
               htmlFor="newsletter-first-name"
-              className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+              className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase dark:text-slate-400"
             >
               First name
             </label>
@@ -106,12 +106,12 @@ export default function Newsletter() {
               aria-invalid={Boolean(errors.firstName)}
               className={`${inputClass} ${
                 errors.firstName
-                  ? "border-red-300 focus:border-red-400 focus:ring-red-400"
-                  : "border-slate-200 focus:border-orange-400 focus:ring-orange-400"
+                  ? "border-red-300 focus:border-red-400 focus:ring-red-400 dark:border-red-500/50"
+                  : "border-slate-200 focus:border-orange-400 focus:ring-orange-400 dark:border-slate-700"
               }`}
             />
             {errors.firstName && (
-              <p className="mt-1.5 text-xs font-medium text-red-600">
+              <p className="mt-1.5 text-xs font-medium text-red-600 dark:text-red-400">
                 {errors.firstName}
               </p>
             )}
@@ -120,7 +120,7 @@ export default function Newsletter() {
           <div>
             <label
               htmlFor="newsletter-email"
-              className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+              className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase dark:text-slate-400"
             >
               Email
             </label>
@@ -133,12 +133,12 @@ export default function Newsletter() {
               aria-invalid={Boolean(errors.email)}
               className={`${inputClass} ${
                 errors.email
-                  ? "border-red-300 focus:border-red-400 focus:ring-red-400"
-                  : "border-slate-200 focus:border-orange-400 focus:ring-orange-400"
+                  ? "border-red-300 focus:border-red-400 focus:ring-red-400 dark:border-red-500/50"
+                  : "border-slate-200 focus:border-orange-400 focus:ring-orange-400 dark:border-slate-700"
               }`}
             />
             {errors.email && (
-              <p className="mt-1.5 text-xs font-medium text-red-600">
+              <p className="mt-1.5 text-xs font-medium text-red-600 dark:text-red-400">
                 {errors.email}
               </p>
             )}
