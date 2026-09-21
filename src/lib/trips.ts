@@ -23,6 +23,9 @@ export const TRIP_TYPES = [
 
 export type TripStyle = (typeof TRIP_TYPES)[number];
 
+// Built-in showcase trips, shipped with the site so there's always
+// something to browse. User-created trips live in localStorage —
+// see src/lib/personalTrips.ts.
 export const trips: Trip[] = [
   {
     id: 1,
@@ -69,42 +72,6 @@ export function getTripById(id: number): Trip | undefined {
   return trips.find((trip) => trip.id === id);
 }
 
-export type NewTripInput = {
-  destination: string;
-  country: string;
-  startDate: string;
-  endDate: string;
-  travelStyle: string;
-  budget: number;
-  image?: string;
-  description: string;
-  activities: string[];
-  packingList: string[];
-  notes: string;
-};
-
-export function addTrip(input: NewTripInput): Trip {
-  const nextId = trips.reduce((max, trip) => Math.max(max, trip.id), 0) + 1;
-
-  const trip: Trip = {
-    id: nextId,
-    destination: `${input.destination}, ${input.country}`,
-    startDate: input.startDate,
-    endDate: input.endDate,
-    description: input.description,
-    activities: input.activities,
-    packingList: input.packingList,
-    notes: input.notes,
-    budget: input.budget,
-    spent: 0,
-    travelStyle: input.travelStyle,
-    image: input.image || "/images/hero-travel.jpg",
-  };
-
-  trips.push(trip);
-  return trip;
-}
-
 export function formatDate(dateString: string) {
   return new Date(dateString).toLocaleDateString("en-US", {
     month: "short",
@@ -136,8 +103,8 @@ export function formatCurrency(amount: number) {
   }).format(amount);
 }
 
-export function nextDeparture() {
-  return trips
+export function nextDeparture(list: Trip[] = trips) {
+  return list
     .filter((trip) => daysUntil(trip.startDate) >= 0)
     .sort((a, b) => daysUntil(a.startDate) - daysUntil(b.startDate))[0];
 }

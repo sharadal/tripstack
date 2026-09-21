@@ -1,12 +1,15 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { TRIP_TYPES } from "@/lib/trips";
-import { createTrip, type CreateTripState } from "./actions";
+import { getTravelStyleMeta } from "@/lib/travelStyleMeta";
+import { addPersonalTrip } from "@/lib/personalTrips";
+import { PlaneIcon } from "@/components/icons";
 
 const inputClass =
-  "w-full rounded-full border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 focus:border-teal-800 focus:outline-none focus:ring-1 focus:ring-teal-800";
+  "w-full rounded-full border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition focus:border-orange-400 focus:outline-none focus:ring-1 focus:ring-orange-400";
 
 function TagList({
   label,
@@ -54,7 +57,7 @@ function TagList({
         <button
           type="button"
           onClick={submitValue}
-          className="shrink-0 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-700 hover:border-slate-300"
+          className="shrink-0 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-700 transition hover:-translate-y-0.5 hover:border-orange-300 hover:text-orange-700"
         >
           Add
         </button>
@@ -85,24 +88,68 @@ function TagList({
   );
 }
 
-const initialState: CreateTripState = {};
-
 export default function NewTripForm() {
-  const [state, formAction, pending] = useActionState(
-    createTrip,
-    initialState,
-  );
+  const router = useRouter();
   const [travelStyle, setTravelStyle] = useState("City");
   const [activities, setActivities] = useState<string[]>([]);
   const [packingList, setPackingList] = useState<string[]>([]);
+  const [error, setError] = useState<string>();
+  const [pending, setPending] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(undefined);
+
+    const formData = new FormData(e.currentTarget);
+    const destination = String(formData.get("destination") ?? "").trim();
+    const country = String(formData.get("country") ?? "").trim();
+    const startDate = String(formData.get("startDate") ?? "");
+    const endDate = String(formData.get("endDate") ?? "");
+    const image = String(formData.get("image") ?? "").trim();
+    const description = String(formData.get("description") ?? "").trim();
+    const notes = String(formData.get("notes") ?? "").trim();
+    const budget = Number(formData.get("budget"));
+
+    if (!destination || !country) {
+      setError("Destination and country are required.");
+      return;
+    }
+    if (!startDate || !endDate) {
+      setError("Start and end dates are required.");
+      return;
+    }
+    if (new Date(endDate) < new Date(startDate)) {
+      setError("End date can't be before the start date.");
+      return;
+    }
+    if (!Number.isFinite(budget) || budget <= 0) {
+      setError("Enter a valid budget.");
+      return;
+    }
+
+    setPending(true);
+    const trip = addPersonalTrip({
+      destination,
+      country,
+      startDate,
+      endDate,
+      travelStyle,
+      budget,
+      image: image || undefined,
+      description,
+      activities,
+      packingList,
+      notes,
+    });
+
+    router.push(`/trips/${trip.id}`);
+  };
 
   return (
     <form
-      action={formAction}
-      className="mt-6 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm"
+      onSubmit={handleSubmit}
+      className="mt-6 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm"
     >
-      <input type="hidden" name="travelStyle" value={travelStyle} />
-
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
           <label className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase">
@@ -158,20 +205,29 @@ export default function NewTripForm() {
           Trip type
         </label>
         <div className="mt-2 flex flex-wrap gap-2">
-          {TRIP_TYPES.map((type) => (
-            <button
-              key={type}
-              type="button"
-              onClick={() => setTravelStyle(type)}
-              className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
-                travelStyle === type
-                  ? "bg-teal-950 text-white"
-                  : "border border-slate-200 bg-white text-slate-600 hover:border-slate-300"
-              }`}
-            >
-              {type}
-            </button>
-          ))}
+          {TRIP_TYPES.map((type) => {
+            const meta = getTravelStyleMeta(type);
+            const Icon = meta.icon;
+            const isActive = travelStyle === type;
+
+            return (
+              <button
+                key={type}
+                type="button"
+                onClick={() => setTravelStyle(type)}
+                className={`inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 ${
+                  isActive
+                    ? "bg-teal-950 text-white shadow-sm"
+                    : "border border-slate-200 bg-white text-slate-600 hover:border-orange-300 hover:text-orange-700"
+                }`}
+              >
+                <Icon
+                  className={`h-3.5 w-3.5 ${isActive ? "text-orange-300" : ""}`}
+                />
+                {type}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -252,21 +308,22 @@ export default function NewTripForm() {
         />
       </div>
 
-      {state?.error && (
-        <p className="mt-6 text-sm font-medium text-red-600">{state.error}</p>
+      {error && (
+        <p className="mt-6 text-sm font-medium text-red-600">{error}</p>
       )}
 
       <div className="mt-8 flex items-center gap-4 border-t border-slate-100 pt-6">
         <button
           type="submit"
           disabled={pending}
-          className="rounded-full bg-teal-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-teal-900 disabled:opacity-60"
+          className="inline-flex items-center gap-1.5 rounded-full bg-teal-950 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-teal-900 hover:shadow-md disabled:pointer-events-none disabled:opacity-60"
         >
+          <PlaneIcon className="h-3.5 w-3.5 -rotate-45" />
           {pending ? "Saving…" : "Save trip"}
         </button>
         <Link
           href="/#upcoming"
-          className="text-sm font-medium text-slate-500 hover:text-slate-900"
+          className="text-sm font-medium text-slate-500 transition hover:text-teal-900"
         >
           Cancel
         </Link>
