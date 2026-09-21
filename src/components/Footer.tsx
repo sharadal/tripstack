@@ -10,6 +10,7 @@ const GET_STARTED_LINKS = [
   { label: "Upcoming trips", href: "/#upcoming" },
   { label: "Budget at a glance", href: "/#budget" },
   { label: "Travel quiz", href: "/#quiz" },
+  { label: "Newsletter", href: "#newsletter" },
 ];
 
 export default function Footer() {

@@ -44,6 +44,13 @@ export default function Header() {
             <span className="absolute -bottom-1 left-0 h-0.5 w-0 rounded-full bg-orange-500 transition-all duration-300 group-hover:w-full" />
           </Link>
           <Link
+            href="#newsletter"
+            className="group relative hidden text-sm font-medium text-slate-600 transition hover:text-teal-900 sm:inline"
+          >
+            Newsletter
+            <span className="absolute -bottom-1 left-0 h-0.5 w-0 rounded-full bg-orange-500 transition-all duration-300 group-hover:w-full" />
+          </Link>
+          <Link
             href="/trips/new"
             className="inline-flex items-center justify-center gap-1.5 rounded-full bg-teal-950 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-teal-900 hover:shadow-md active:translate-y-0"
           >
@@ -69,7 +76,7 @@ export default function Header() {
 
       <div
         className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out sm:hidden ${
-          isMenuOpen ? "max-h-56 opacity-100" : "max-h-0 opacity-0"
+          isMenuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
         <nav className="flex flex-col gap-1 border-t border-teal-950/10 px-6 py-3">
@@ -93,6 +100,13 @@ export default function Header() {
             className="rounded-lg px-2 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-orange-50 hover:text-orange-700"
           >
             Quiz
+          </Link>
+          <Link
+            href="#newsletter"
+            onClick={() => setIsMenuOpen(false)}
+            className="rounded-lg px-2 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-orange-50 hover:text-orange-700"
+          >
+            Newsletter
           </Link>
         </nav>
       </div>
