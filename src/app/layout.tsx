@@ -37,6 +37,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {children}
         <section
           id="newsletter"
+          aria-label="Newsletter signup"
           className="mx-auto w-full max-w-6xl bg-stone-50 px-6 pb-16"
         >
           <Newsletter />

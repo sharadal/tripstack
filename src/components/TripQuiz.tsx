@@ -61,7 +61,7 @@ export default function TripQuiz({ trips }: { trips: Trip[] }) {
   return (
     <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-shadow duration-300 hover:shadow-md md:grid md:grid-cols-2">
       <div className="p-8 sm:p-10">
-        <p className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.2em] text-orange-600 uppercase">
+        <p className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.2em] text-orange-700 uppercase">
           <SparkleIcon className="h-3.5 w-3.5" />
           Two-minute quiz
         </p>

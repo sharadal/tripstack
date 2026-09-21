@@ -58,6 +58,7 @@ export default function UpcomingTrips({ trips }: { trips: Trip[] }) {
                 key={category}
                 type="button"
                 onClick={() => setActiveCategory(category)}
+                aria-pressed={isActive}
                 className={`inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 ${
                   isActive
                     ? "bg-teal-950 text-white shadow-sm"
@@ -155,7 +156,7 @@ export default function UpcomingTrips({ trips }: { trips: Trip[] }) {
                       {formatCurrency(trip.spent)} of{" "}
                       {formatCurrency(trip.budget)}
                     </span>
-                    <span className="font-semibold text-orange-600">
+                    <span className="font-semibold text-orange-700">
                       {percentSpent}%
                     </span>
                   </div>

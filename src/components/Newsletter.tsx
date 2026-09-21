@@ -71,7 +71,7 @@ export default function Newsletter() {
   return (
     <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
       <div className="mx-auto max-w-xl text-center">
-        <p className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.2em] text-orange-600 uppercase">
+        <p className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.2em] text-orange-700 uppercase">
           <SparkleIcon className="h-3.5 w-3.5" />
           Stay in the loop
         </p>

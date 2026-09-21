@@ -27,6 +27,7 @@ function TagList({
   onRemove: (index: number) => void;
 }) {
   const [value, setValue] = useState("");
+  const inputId = `tag-input-${name}`;
 
   const submitValue = () => {
     const trimmed = value.trim();
@@ -37,11 +38,15 @@ function TagList({
 
   return (
     <div>
-      <label className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase">
+      <label
+        htmlFor={inputId}
+        className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+      >
         {label}
       </label>
       <div className="mt-2 flex gap-2">
         <input
+          id={inputId}
           type="text"
           value={value}
           onChange={(e) => setValue(e.target.value)}
@@ -152,10 +157,14 @@ export default function NewTripForm() {
     >
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
-          <label className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase">
+          <label
+            htmlFor="destination"
+            className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+          >
             Destination
           </label>
           <input
+            id="destination"
             type="text"
             name="destination"
             placeholder="Lisbon"
@@ -164,10 +173,14 @@ export default function NewTripForm() {
           />
         </div>
         <div>
-          <label className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase">
+          <label
+            htmlFor="country"
+            className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+          >
             Country
           </label>
           <input
+            id="country"
             type="text"
             name="country"
             placeholder="Portugal"
@@ -177,10 +190,14 @@ export default function NewTripForm() {
         </div>
 
         <div>
-          <label className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase">
+          <label
+            htmlFor="startDate"
+            className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+          >
             Start date
           </label>
           <input
+            id="startDate"
             type="date"
             name="startDate"
             required
@@ -188,10 +205,14 @@ export default function NewTripForm() {
           />
         </div>
         <div>
-          <label className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase">
+          <label
+            htmlFor="endDate"
+            className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+          >
             End date
           </label>
           <input
+            id="endDate"
             type="date"
             name="endDate"
             required
@@ -215,6 +236,7 @@ export default function NewTripForm() {
                 key={type}
                 type="button"
                 onClick={() => setTravelStyle(type)}
+                aria-pressed={isActive}
                 className={`inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 ${
                   isActive
                     ? "bg-teal-950 text-white shadow-sm"
@@ -233,10 +255,14 @@ export default function NewTripForm() {
 
       <div className="mt-6 grid gap-6 sm:grid-cols-2">
         <div>
-          <label className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase">
+          <label
+            htmlFor="budget"
+            className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+          >
             Budget (EUR)
           </label>
           <input
+            id="budget"
             type="number"
             name="budget"
             min="1"
@@ -246,10 +272,14 @@ export default function NewTripForm() {
           />
         </div>
         <div>
-          <label className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase">
+          <label
+            htmlFor="image"
+            className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+          >
             Cover photo link (optional)
           </label>
           <input
+            id="image"
             type="url"
             name="image"
             placeholder="https://..."
@@ -259,10 +289,14 @@ export default function NewTripForm() {
       </div>
 
       <div className="mt-6">
-        <label className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase">
+        <label
+          htmlFor="description"
+          className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+        >
           Short summary
         </label>
         <textarea
+          id="description"
           name="description"
           rows={2}
           placeholder="Tiles, trams and a slow week in the hills."
@@ -297,10 +331,14 @@ export default function NewTripForm() {
       </div>
 
       <div className="mt-6">
-        <label className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase">
+        <label
+          htmlFor="notes"
+          className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase"
+        >
           Notes
         </label>
         <textarea
+          id="notes"
           name="notes"
           rows={3}
           placeholder="Book tickets two weeks ahead."

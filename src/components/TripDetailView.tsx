@@ -123,7 +123,7 @@ export default function TripDetailView({ trip }: { trip: Trip }) {
               {formatCurrency(trip.spent)} of {formatCurrency(trip.budget)}{" "}
               committed
             </span>
-            <span className="font-semibold text-orange-600">
+            <span className="font-semibold text-orange-700">
               {percentSpent}%
             </span>
           </div>
