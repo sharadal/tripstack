@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   type Trip,
   formatCurrency,
@@ -82,10 +83,30 @@ export default function HomeContent({ demoTrips }: { demoTrips: Trip[] }) {
             countdown to the next departure.
           </p>
 
+          <div
+            className="animate-fade-in-up mt-8 flex flex-wrap items-center gap-4"
+            style={{ animationDelay: "180ms" }}
+          >
+            <Link
+              href="/trips/new"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-amber-300 px-6 py-3 text-sm font-semibold text-teal-950 shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-amber-200 hover:shadow-xl"
+            >
+              <PlaneIcon className="h-4 w-4 -rotate-45" />
+              Start planning your trip
+            </Link>
+            <Link
+              href="/#quiz"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/40 bg-white/10 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/20"
+            >
+              <SparkleIcon className="h-4 w-4 text-amber-300" />
+              Find my travel style
+            </Link>
+          </div>
+
           {upcoming && (
             <div
               className="animate-fade-in-up group mt-8 inline-flex max-w-md flex-wrap items-center gap-6 rounded-2xl bg-stone-50 px-6 py-5 text-slate-900 shadow-lg transition-transform duration-300 hover:-translate-y-1 sm:flex-nowrap"
-              style={{ animationDelay: "200ms" }}
+              style={{ animationDelay: "240ms" }}
             >
               <div>
                 <p className="flex items-center gap-1.5 text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase">

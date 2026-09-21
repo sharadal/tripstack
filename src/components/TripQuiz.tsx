@@ -148,8 +148,8 @@ export default function TripQuiz({ trips }: { trips: Trip[] }) {
 
       <div className="relative h-56 w-full md:h-auto">
         <Image
-          src="/images/hero-travel.jpg"
-          alt=""
+          src="/images/trip-capetown.jpg"
+          alt="Table Mountain rising above Cape Town's harbour"
           fill
           sizes="(min-width: 768px) 50vw, 100vw"
           className="object-cover"

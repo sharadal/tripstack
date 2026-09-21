@@ -1,2 +1,2 @@
-# tripstack
-A simple AI-powered travel planner that creates personalized trip recommendations based on your destination, budget, interests, travel style, and trip length.
+# TripStack
+A calm, friendly travel planner: track upcoming trips, budgets, activities and packing lists in one place, and take a two-minute quiz to find out what kind of trip you're due for.

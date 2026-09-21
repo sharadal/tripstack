@@ -20,9 +20,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "TripStack",
+  title: "TripStack — Plan your next adventure",
   description:
-    "TripStack is a simple travel planning web app that helps you organise a trip in one place.",
+    "Dates, budgets, packing lists and a two-minute travel-style quiz — everything for your next trip, all in one calm place.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

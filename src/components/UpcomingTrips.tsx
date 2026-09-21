@@ -10,7 +10,12 @@ import {
   getNights,
 } from "@/lib/trips";
 import CountdownBadge from "@/components/CountdownBadge";
-import { CompassIcon, MapPinIcon, SparkleIcon } from "@/components/icons";
+import {
+  CompassIcon,
+  MapPinIcon,
+  PlaneIcon,
+  SparkleIcon,
+} from "@/components/icons";
 import { getTravelStyleMeta } from "@/lib/travelStyleMeta";
 
 const ACTIVITY_TINTS = [
@@ -165,6 +170,24 @@ export default function UpcomingTrips({ trips }: { trips: Trip[] }) {
             </Link>
           );
         })}
+
+        <Link
+          href="/trips/new"
+          className="group flex min-h-[240px] flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed border-teal-200 bg-teal-50/40 p-8 text-center transition-all duration-300 hover:-translate-y-1.5 hover:border-orange-300 hover:bg-orange-50/60"
+        >
+          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-teal-950 text-white transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110">
+            <PlaneIcon className="h-5 w-5 -rotate-45" />
+          </span>
+          <div>
+            <p className="font-serif text-lg font-bold text-slate-900">
+              Build your next adventure
+            </p>
+            <p className="mt-1 text-sm text-slate-500">
+              Add the dates, the budget, the packing list — we&apos;ll keep
+              it all in one place.
+            </p>
+          </div>
+        </Link>
       </div>
     </div>
   );
