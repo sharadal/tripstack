@@ -75,7 +75,7 @@ function TagList({
                 type="button"
                 onClick={() => onRemove(index)}
                 aria-label={`Remove ${item}`}
-                className="text-amber-700 hover:text-amber-950"
+                className="inline-block text-amber-700 transition-transform duration-150 hover:scale-125 hover:text-amber-950"
               >
                 ×
               </button>

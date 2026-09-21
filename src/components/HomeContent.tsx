@@ -13,6 +13,7 @@ import {
 import { usePersonalTrips } from "@/hooks/usePersonalTrips";
 import UpcomingTrips from "@/components/UpcomingTrips";
 import TripQuiz from "@/components/TripQuiz";
+import ScrollReveal from "@/components/ScrollReveal";
 import { PlaneIcon, SparkleIcon, WalletIcon } from "@/components/icons";
 
 export default function HomeContent({ demoTrips }: { demoTrips: Trip[] }) {
@@ -149,64 +150,66 @@ export default function HomeContent({ demoTrips }: { demoTrips: Trip[] }) {
       </section>
 
       <section id="budget" className="mx-auto max-w-6xl px-6 pb-16">
-        <h2 className="mb-6 flex items-center gap-2 font-serif text-3xl font-bold text-slate-900">
-          <WalletIcon className="h-7 w-7 text-teal-700" />
-          Budget at a glance
-        </h2>
+        <ScrollReveal>
+          <h2 className="mb-6 flex items-center gap-2 font-serif text-3xl font-bold text-slate-900">
+            <WalletIcon className="h-7 w-7 text-teal-700" />
+            Budget at a glance
+          </h2>
 
-        <div className="grid gap-6 sm:grid-cols-3">
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow duration-300 hover:shadow-md">
-            <p className="text-sm text-slate-500">Total budget</p>
-            <p className="mt-1 text-2xl font-semibold text-slate-900">
-              {formatCurrency(totalBudget)}
-            </p>
+          <div className="grid gap-6 sm:grid-cols-3">
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow duration-300 hover:shadow-md">
+              <p className="text-sm text-slate-500">Total budget</p>
+              <p className="mt-1 text-2xl font-semibold text-slate-900">
+                {formatCurrency(totalBudget)}
+              </p>
+            </div>
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow duration-300 hover:shadow-md">
+              <p className="text-sm text-slate-500">Committed so far</p>
+              <p className="mt-1 text-2xl font-semibold text-orange-600">
+                {formatCurrency(totalSpent)}
+              </p>
+            </div>
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow duration-300 hover:shadow-md">
+              <p className="text-sm text-slate-500">Remaining</p>
+              <p className="mt-1 text-2xl font-semibold text-teal-800">
+                {formatCurrency(totalRemaining)}
+              </p>
+            </div>
           </div>
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow duration-300 hover:shadow-md">
-            <p className="text-sm text-slate-500">Committed so far</p>
-            <p className="mt-1 text-2xl font-semibold text-orange-600">
-              {formatCurrency(totalSpent)}
-            </p>
-          </div>
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow duration-300 hover:shadow-md">
-            <p className="text-sm text-slate-500">Remaining</p>
-            <p className="mt-1 text-2xl font-semibold text-teal-800">
-              {formatCurrency(totalRemaining)}
-            </p>
-          </div>
-        </div>
 
-        <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <ul className="divide-y divide-slate-100">
-            {trips.map((trip) => {
-              const percentSpent = Math.round(
-                (trip.spent / trip.budget) * 100,
-              );
+          <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <ul className="divide-y divide-slate-100">
+              {trips.map((trip) => {
+                const percentSpent = Math.round(
+                  (trip.spent / trip.budget) * 100,
+                );
 
-              return (
-                <li
-                  key={trip.id}
-                  className="flex flex-col gap-2 py-3 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
-                >
-                  <div>
-                    <p className="text-sm font-medium text-slate-900">
-                      {trip.destination}
-                    </p>
-                    <p className="text-xs text-slate-500">
-                      {formatCurrency(trip.spent)} committed of{" "}
-                      {formatCurrency(trip.budget)}
-                    </p>
-                  </div>
-                  <div className="h-2 w-full rounded-full bg-slate-100 sm:w-40">
-                    <div
-                      className="h-2 rounded-full bg-gradient-to-r from-orange-400 to-orange-600"
-                      style={{ width: `${percentSpent}%` }}
-                    />
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+                return (
+                  <li
+                    key={trip.id}
+                    className="flex flex-col gap-2 py-3 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
+                  >
+                    <div>
+                      <p className="text-sm font-medium text-slate-900">
+                        {trip.destination}
+                      </p>
+                      <p className="text-xs text-slate-500">
+                        {formatCurrency(trip.spent)} committed of{" "}
+                        {formatCurrency(trip.budget)}
+                      </p>
+                    </div>
+                    <div className="h-2 w-full rounded-full bg-slate-100 sm:w-40">
+                      <div
+                        className="h-2 rounded-full bg-gradient-to-r from-orange-400 to-orange-600"
+                        style={{ width: `${percentSpent}%` }}
+                      />
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </ScrollReveal>
       </section>
 
       <section id="quiz" className="mx-auto max-w-6xl px-6 pb-16">
