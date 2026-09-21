@@ -7,6 +7,7 @@ import {
   nextDeparture,
 } from "@/lib/trips";
 import UpcomingTrips from "@/components/UpcomingTrips";
+import TripQuiz from "@/components/TripQuiz";
 
 export default function Home() {
   const totalBudget = trips.reduce((sum, trip) => sum + trip.budget, 0);
@@ -132,6 +133,10 @@ export default function Home() {
             })}
           </ul>
         </div>
+      </section>
+
+      <section id="quiz" className="mx-auto max-w-6xl px-6 pb-16">
+        <TripQuiz trips={trips} />
       </section>
     </main>
   );

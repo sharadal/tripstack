@@ -13,6 +13,16 @@ export type Trip = {
   image: string;
 };
 
+export const TRIP_TYPES = [
+  "Beach",
+  "City",
+  "Mountains",
+  "Road trip",
+  "Culture",
+] as const;
+
+export type TripStyle = (typeof TRIP_TYPES)[number];
+
 export const trips: Trip[] = [
   {
     id: 1,

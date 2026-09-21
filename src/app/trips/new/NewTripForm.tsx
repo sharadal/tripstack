@@ -2,9 +2,8 @@
 
 import { useActionState, useState } from "react";
 import Link from "next/link";
+import { TRIP_TYPES } from "@/lib/trips";
 import { createTrip, type CreateTripState } from "./actions";
-
-const TRIP_TYPES = ["Beach", "City", "Mountains", "Road trip", "Culture"];
 
 const inputClass =
   "w-full rounded-full border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 focus:border-teal-800 focus:outline-none focus:ring-1 focus:ring-teal-800";
