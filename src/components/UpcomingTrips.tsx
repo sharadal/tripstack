@@ -63,13 +63,22 @@ export default function UpcomingTrips({ trips }: { trips: Trip[] }) {
               className="block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md"
             >
               <div className="relative h-48 w-full">
-                <Image
-                  src={trip.image}
-                  alt={trip.destination}
-                  fill
-                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  className="object-cover"
-                />
+                {trip.image.startsWith("/") ? (
+                  <Image
+                    src={trip.image}
+                    alt={trip.destination}
+                    fill
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    className="object-cover"
+                  />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={trip.image}
+                    alt={trip.destination}
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                )}
                 <span className="absolute left-3 top-3 inline-block rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-slate-900">
                   {trip.travelStyle}
                 </span>

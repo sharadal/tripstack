@@ -31,14 +31,23 @@ export default async function TripDetail({
   return (
     <main className="flex-1 bg-stone-50">
       <div className="relative h-64 w-full sm:h-80">
-        <Image
-          src={trip.image}
-          alt={trip.destination}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
+        {trip.image.startsWith("/") ? (
+          <Image
+            src={trip.image}
+            alt={trip.destination}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+        ) : (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={trip.image}
+            alt={trip.destination}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-teal-950/70 via-teal-950/10 to-transparent" />
         <span className="absolute right-4 top-4">
           <CountdownBadge startDate={trip.startDate} />
@@ -83,6 +92,33 @@ export default async function TripDetail({
             </span>
           ))}
         </div>
+
+        {trip.packingList && trip.packingList.length > 0 && (
+          <>
+            <h2 className="mt-8 text-lg font-semibold text-slate-900">
+              Packing list
+            </h2>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {trip.packingList.map((item) => (
+                <span
+                  key={item}
+                  className="inline-block rounded-full bg-white px-3 py-1 text-xs font-medium text-slate-900 shadow-sm"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </>
+        )}
+
+        {trip.notes && (
+          <>
+            <h2 className="mt-8 text-lg font-semibold text-slate-900">
+              Notes
+            </h2>
+            <p className="mt-3 text-slate-600">{trip.notes}</p>
+          </>
+        )}
 
         <h2 className="mt-8 text-lg font-semibold text-slate-900">Budget</h2>
         <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
