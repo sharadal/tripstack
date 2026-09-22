@@ -11,6 +11,8 @@ import {
   nextDeparture,
 } from "@/lib/trips";
 import { usePersonalTrips } from "@/hooks/usePersonalTrips";
+import { useBudgetEntries } from "@/hooks/useBudgetEntries";
+import { getTripSpent } from "@/lib/budget";
 import UpcomingTrips from "@/components/UpcomingTrips";
 import TripQuiz from "@/components/TripQuiz";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -18,13 +20,17 @@ import { PlaneIcon, SparkleIcon, WalletIcon } from "@/components/icons";
 
 export default function HomeContent({ demoTrips }: { demoTrips: Trip[] }) {
   const { trips: personalTrips } = usePersonalTrips();
+  const budgetEntries = useBudgetEntries();
   const trips = useMemo(
     () => [...demoTrips, ...personalTrips],
     [demoTrips, personalTrips],
   );
 
   const totalBudget = trips.reduce((sum, trip) => sum + trip.budget, 0);
-  const totalSpent = trips.reduce((sum, trip) => sum + trip.spent, 0);
+  const totalSpent = trips.reduce(
+    (sum, trip) => sum + getTripSpent(trip, budgetEntries),
+    0,
+  );
   const totalRemaining = totalBudget - totalSpent;
   const upcoming = nextDeparture(trips);
 
@@ -180,9 +186,9 @@ export default function HomeContent({ demoTrips }: { demoTrips: Trip[] }) {
           <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
             <ul className="divide-y divide-slate-100 dark:divide-slate-800">
               {trips.map((trip) => {
-                const percentSpent = Math.round(
-                  (trip.spent / trip.budget) * 100,
-                );
+                const spent = getTripSpent(trip, budgetEntries);
+                const percentSpent = Math.round((spent / trip.budget) * 100);
+                const overBudget = spent > trip.budget;
 
                 return (
                   <li
@@ -194,14 +200,18 @@ export default function HomeContent({ demoTrips }: { demoTrips: Trip[] }) {
                         {trip.destination}
                       </p>
                       <p className="text-xs text-slate-500 dark:text-slate-400">
-                        {formatCurrency(trip.spent)} committed of{" "}
+                        {formatCurrency(spent)} committed of{" "}
                         {formatCurrency(trip.budget)}
                       </p>
                     </div>
                     <div className="h-2 w-full rounded-full bg-slate-100 sm:w-40 dark:bg-slate-800">
                       <div
-                        className="h-2 rounded-full bg-gradient-to-r from-orange-400 to-orange-600"
-                        style={{ width: `${percentSpent}%` }}
+                        className={`h-2 rounded-full bg-gradient-to-r ${
+                          overBudget
+                            ? "from-red-500 to-red-600"
+                            : "from-orange-400 to-orange-600"
+                        }`}
+                        style={{ width: `${Math.min(percentSpent, 100)}%` }}
                       />
                     </div>
                   </li>

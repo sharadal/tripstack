@@ -1,17 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  type Trip,
-  formatDate,
-  formatCurrency,
-  getNights,
-} from "@/lib/trips";
+import { type Trip, formatDate, getNights } from "@/lib/trips";
 import CountdownBadge from "@/components/CountdownBadge";
+import BudgetPanel from "@/components/BudgetPanel";
 import { getTravelStyleMeta } from "@/lib/travelStyleMeta";
-import { WalletIcon } from "@/components/icons";
 
 export default function TripDetailView({ trip }: { trip: Trip }) {
-  const percentSpent = Math.round((trip.spent / trip.budget) * 100);
   const meta = getTravelStyleMeta(trip.travelStyle);
   const StyleIcon = meta.icon;
 
@@ -119,27 +113,7 @@ export default function TripDetailView({ trip }: { trip: Trip }) {
           </>
         )}
 
-        <h2 className="mt-8 flex items-center gap-2 text-lg font-semibold text-slate-900 dark:text-slate-50">
-          <WalletIcon className="h-5 w-5 text-teal-700 dark:text-teal-400" />
-          Budget
-        </h2>
-        <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <div className="flex items-center justify-between text-sm text-slate-600 dark:text-slate-300">
-            <span>
-              {formatCurrency(trip.spent)} of {formatCurrency(trip.budget)}{" "}
-              committed
-            </span>
-            <span className="font-semibold text-orange-700 dark:text-orange-400">
-              {percentSpent}%
-            </span>
-          </div>
-          <div className="mt-2 h-2 w-full rounded-full bg-slate-100 dark:bg-slate-800">
-            <div
-              className="h-2 rounded-full bg-gradient-to-r from-orange-400 to-orange-600"
-              style={{ width: `${percentSpent}%` }}
-            />
-          </div>
-        </div>
+        <BudgetPanel trip={trip} />
       </section>
     </main>
   );

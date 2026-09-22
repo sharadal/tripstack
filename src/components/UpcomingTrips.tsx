@@ -17,6 +17,8 @@ import {
   SparkleIcon,
 } from "@/components/icons";
 import { getTravelStyleMeta } from "@/lib/travelStyleMeta";
+import { useBudgetEntries } from "@/hooks/useBudgetEntries";
+import { getTripSpent } from "@/lib/budget";
 
 const ACTIVITY_TINTS = [
   "bg-amber-50 text-amber-900 dark:bg-amber-500/15 dark:text-amber-300",
@@ -27,6 +29,7 @@ const ACTIVITY_TINTS = [
 export default function UpcomingTrips({ trips }: { trips: Trip[] }) {
   const categories = ["All", ...new Set(trips.map((trip) => trip.travelStyle))];
   const [activeCategory, setActiveCategory] = useState("All");
+  const budgetEntries = useBudgetEntries();
 
   const visibleTrips =
     activeCategory === "All"
@@ -79,7 +82,9 @@ export default function UpcomingTrips({ trips }: { trips: Trip[] }) {
         {visibleTrips.map((trip, index) => {
           const [city, ...rest] = trip.destination.split(",");
           const country = rest.join(",").trim();
-          const percentSpent = Math.round((trip.spent / trip.budget) * 100);
+          const spent = getTripSpent(trip, budgetEntries);
+          const percentSpent = Math.round((spent / trip.budget) * 100);
+          const overBudget = spent > trip.budget;
           const meta = getTravelStyleMeta(trip.travelStyle);
           const Icon = meta.icon;
 
@@ -155,17 +160,27 @@ export default function UpcomingTrips({ trips }: { trips: Trip[] }) {
                 <div className="mt-4 border-t border-slate-100 pt-3 dark:border-slate-800">
                   <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
                     <span>
-                      {formatCurrency(trip.spent)} of{" "}
+                      {formatCurrency(spent)} of{" "}
                       {formatCurrency(trip.budget)}
                     </span>
-                    <span className="font-semibold text-orange-700 dark:text-orange-400">
+                    <span
+                      className={`font-semibold ${
+                        overBudget
+                          ? "text-red-600 dark:text-red-400"
+                          : "text-orange-700 dark:text-orange-400"
+                      }`}
+                    >
                       {percentSpent}%
                     </span>
                   </div>
                   <div className="mt-2 h-1.5 w-full rounded-full bg-slate-100 dark:bg-slate-800">
                     <div
-                      className="h-1.5 rounded-full bg-gradient-to-r from-orange-400 to-orange-600"
-                      style={{ width: `${percentSpent}%` }}
+                      className={`h-1.5 rounded-full bg-gradient-to-r ${
+                        overBudget
+                          ? "from-red-500 to-red-600"
+                          : "from-orange-400 to-orange-600"
+                      }`}
+                      style={{ width: `${Math.min(percentSpent, 100)}%` }}
                     />
                   </div>
                 </div>
