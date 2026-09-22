@@ -4,17 +4,25 @@ import { useEffect, useState } from "react";
 import { MoonIcon, SunIcon } from "@/components/icons";
 
 export default function ThemeToggle() {
-  const [mounted, setMounted] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+  const [state, setState] = useState<{ mounted: boolean; isDark: boolean }>({
+    mounted: false,
+    isDark: false,
+  });
+  const { mounted, isDark } = state;
 
   useEffect(() => {
-    setMounted(true);
-    setIsDark(document.documentElement.classList.contains("dark"));
+    // One-time read of client-only state (DOM class set by the inline
+    // theme-init script) to avoid a server/client hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setState({
+      mounted: true,
+      isDark: document.documentElement.classList.contains("dark"),
+    });
   }, []);
 
   const toggle = () => {
     const next = !isDark;
-    setIsDark(next);
+    setState({ mounted: true, isDark: next });
     document.documentElement.classList.toggle("dark", next);
     try {
       localStorage.setItem("theme", next ? "dark" : "light");

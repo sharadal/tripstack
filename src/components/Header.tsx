@@ -53,7 +53,7 @@ export default function Header() {
           </Link>
           <Link
             href="/trips/new"
-            className="inline-flex items-center justify-center gap-1.5 rounded-full bg-teal-950 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-teal-900 hover:shadow-md active:translate-y-0"
+            className="hidden items-center justify-center gap-1.5 rounded-full bg-teal-950 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-teal-900 hover:shadow-md active:translate-y-0 sm:inline-flex"
           >
             <PlaneIcon className="h-3.5 w-3.5 -rotate-45" />
             Plan a trip
@@ -83,6 +83,14 @@ export default function Header() {
         }`}
       >
         <nav className="flex flex-col gap-1 border-t border-teal-950/10 px-6 py-3 dark:border-white/10">
+          <Link
+            href="/trips/new"
+            onClick={() => setIsMenuOpen(false)}
+            className="mb-2 inline-flex items-center justify-center gap-1.5 rounded-full bg-teal-950 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-900"
+          >
+            <PlaneIcon className="h-3.5 w-3.5 -rotate-45" />
+            Plan a trip
+          </Link>
           <Link
             href="/#upcoming"
             onClick={() => setIsMenuOpen(false)}

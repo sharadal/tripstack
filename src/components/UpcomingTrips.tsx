@@ -124,9 +124,11 @@ export default function UpcomingTrips({ trips }: { trips: Trip[] }) {
               <div className="p-5">
                 <h3 className="flex items-center gap-1 text-lg font-semibold text-slate-900 dark:text-slate-50">
                   <MapPinIcon className="h-4 w-4 shrink-0 text-orange-500" />
-                  {city}
-                  <span className="font-normal text-slate-500 dark:text-slate-400">
-                    ,{country}
+                  <span>
+                    {city}
+                    <span className="font-normal text-slate-500 dark:text-slate-400">
+                      , {country}
+                    </span>
                   </span>
                 </h3>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">

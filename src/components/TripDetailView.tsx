@@ -61,7 +61,9 @@ export default function TripDetailView({ trip }: { trip: Trip }) {
           {getNights(trip)} nights
         </p>
 
-        <p className="mt-4 text-slate-600 dark:text-slate-300">{trip.description}</p>
+        {trip.description && (
+          <p className="mt-4 text-slate-600 dark:text-slate-300">{trip.description}</p>
+        )}
 
         <div className="mt-4 flex flex-wrap gap-2">
           <span
@@ -72,19 +74,23 @@ export default function TripDetailView({ trip }: { trip: Trip }) {
           </span>
         </div>
 
-        <h2 className="mt-8 text-lg font-semibold text-slate-900 dark:text-slate-50">
-          Activities
-        </h2>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {trip.activities.map((activity) => (
-            <span
-              key={activity}
-              className="inline-block rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-900 dark:bg-amber-500/15 dark:text-amber-300"
-            >
-              {activity}
-            </span>
-          ))}
-        </div>
+        {trip.activities.length > 0 && (
+          <>
+            <h2 className="mt-8 text-lg font-semibold text-slate-900 dark:text-slate-50">
+              Activities
+            </h2>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {trip.activities.map((activity) => (
+                <span
+                  key={activity}
+                  className="inline-block rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-900 dark:bg-amber-500/15 dark:text-amber-300"
+                >
+                  {activity}
+                </span>
+              ))}
+            </div>
+          </>
+        )}
 
         {trip.packingList && trip.packingList.length > 0 && (
           <>
