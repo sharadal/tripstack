@@ -1,9 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
 import { PlaneIcon, SparkleIcon } from "@/components/icons";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Postgres unique_violation — the email is already subscribed.
+const UNIQUE_VIOLATION = "23505";
 
 const inputClass =
   "mt-2 w-full rounded-full border bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition focus:outline-none focus:ring-1 dark:bg-slate-800 dark:text-slate-50 dark:placeholder-slate-500";
@@ -11,6 +15,7 @@ const inputClass =
 type Errors = {
   firstName?: string;
   email?: string;
+  form?: string;
 };
 
 export default function Newsletter() {
@@ -18,8 +23,9 @@ export default function Newsletter() {
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState<Errors>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const trimmedName = firstName.trim();
@@ -36,12 +42,22 @@ export default function Newsletter() {
     }
 
     setErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) return;
 
-    if (Object.keys(nextErrors).length === 0) {
-      setSubmitted(true);
-      setFirstName("");
-      setEmail("");
+    setSubmitting(true);
+    const { error } = await supabase
+      .from("subscribers")
+      .insert({ first_name: trimmedName, email: trimmedEmail });
+    setSubmitting(false);
+
+    if (error && error.code !== UNIQUE_VIOLATION) {
+      setErrors({ form: "Something went wrong — please try again." });
+      return;
     }
+
+    setSubmitted(true);
+    setFirstName("");
+    setEmail("");
   };
 
   if (submitted) {
@@ -145,12 +161,19 @@ export default function Newsletter() {
           </div>
         </div>
 
+        {errors.form && (
+          <p className="mt-4 text-sm font-medium text-red-600 dark:text-red-400">
+            {errors.form}
+          </p>
+        )}
+
         <button
           type="submit"
-          className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-teal-950 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-teal-900 hover:shadow-md sm:w-auto"
+          disabled={submitting}
+          className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-teal-950 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-teal-900 hover:shadow-md disabled:pointer-events-none disabled:opacity-60 sm:w-auto"
         >
           <PlaneIcon className="h-3.5 w-3.5 -rotate-45" />
-          Subscribe
+          {submitting ? "Subscribing…" : "Subscribe"}
         </button>
       </form>
     </div>
