@@ -52,6 +52,13 @@ export default function Header() {
             <span className="absolute -bottom-1 left-0 h-0.5 w-0 rounded-full bg-orange-500 transition-all duration-300 group-hover:w-full" />
           </Link>
           <Link
+            href="/admin/subscribers"
+            className="group relative hidden text-sm font-medium text-slate-600 transition hover:text-teal-900 sm:inline dark:text-slate-300 dark:hover:text-amber-300"
+          >
+            Admin
+            <span className="absolute -bottom-1 left-0 h-0.5 w-0 rounded-full bg-orange-500 transition-all duration-300 group-hover:w-full" />
+          </Link>
+          <Link
             href="/trips/new"
             className="hidden items-center justify-center gap-1.5 rounded-full bg-teal-950 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-teal-900 hover:shadow-md active:translate-y-0 sm:inline-flex"
           >
@@ -118,6 +125,13 @@ export default function Header() {
             className="rounded-lg px-2 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-orange-50 hover:text-orange-700 dark:text-slate-300 dark:hover:bg-orange-950/40 dark:hover:text-orange-300"
           >
             Newsletter
+          </Link>
+          <Link
+            href="/admin/subscribers"
+            onClick={() => setIsMenuOpen(false)}
+            className="rounded-lg px-2 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-orange-50 hover:text-orange-700 dark:text-slate-300 dark:hover:bg-orange-950/40 dark:hover:text-orange-300"
+          >
+            Admin
           </Link>
         </nav>
       </div>

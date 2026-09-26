@@ -209,6 +209,25 @@ export function CloseIcon({ className }: IconProps) {
   );
 }
 
+export function UsersIcon({ className }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <circle cx="9" cy="8.5" r="3.2" />
+      <path d="M2.8 20c.7-3.4 3.2-5.5 6.2-5.5s5.5 2.1 6.2 5.5" />
+      <path d="M15.5 5.3a3.2 3.2 0 0 1 0 6.2M18.8 20c-.4-2-1.3-3.6-2.7-4.6" />
+    </svg>
+  );
+}
+
 export function MapPinIcon({ className }: IconProps) {
   return (
     <svg
