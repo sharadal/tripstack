@@ -86,7 +86,7 @@ export default function Header() {
 
       <div
         className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out sm:hidden ${
-          isMenuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
+          isMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
         <nav className="flex flex-col gap-1 border-t border-teal-950/10 px-6 py-3 dark:border-white/10">

@@ -31,8 +31,7 @@ export default async function AdminSubscribersPage() {
           Newsletter subscribers
         </h1>
         <p className="mt-3 max-w-xl text-slate-600 dark:text-slate-300">
-          Add, edit, or remove people on the TripStack mailing list. This
-          page has no login screen — anyone who visits it can make changes.
+          Add, edit, or remove people on the TripStack mailing list.
         </p>
 
         <div className="mt-8">
