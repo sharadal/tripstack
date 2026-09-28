@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { trips as demoTrips } from "@/lib/trips";
+import type { Trip } from "@/lib/trips";
 import { usePersonalTrips } from "@/hooks/usePersonalTrips";
 import { PlaneIcon } from "@/components/icons";
 
@@ -13,7 +13,7 @@ const GET_STARTED_LINKS = [
   { label: "Newsletter", href: "#newsletter" },
 ];
 
-export default function Footer() {
+export default function Footer({ demoTrips }: { demoTrips: Trip[] }) {
   const { trips: personalTrips } = usePersonalTrips();
 
   return (

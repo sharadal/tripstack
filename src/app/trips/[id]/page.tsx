@@ -1,12 +1,10 @@
 import { notFound } from "next/navigation";
-import { trips, getTripById } from "@/lib/trips";
+import { getTripById } from "@/lib/trips";
 import TripDetailView from "@/components/TripDetailView";
 import PersonalTripDetail from "@/components/PersonalTripDetail";
 
-export function generateStaticParams() {
-  return trips.map((trip) => ({ id: String(trip.id) }));
-}
-
+// Trips are now editable data in Supabase, so this route is looked up
+// per-request instead of pre-rendered at build time (no generateStaticParams).
 export default async function TripDetail({
   params,
 }: {
@@ -14,14 +12,15 @@ export default async function TripDetail({
 }) {
   const { id } = await params;
   const numericId = Number(id);
-  const trip = getTripById(numericId);
-
-  if (trip) {
-    return <TripDetailView trip={trip} />;
-  }
 
   if (!Number.isFinite(numericId)) {
     notFound();
+  }
+
+  const trip = await getTripById(numericId);
+
+  if (trip) {
+    return <TripDetailView trip={trip} />;
   }
 
   return <PersonalTripDetail id={numericId} />;

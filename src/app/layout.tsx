@@ -4,6 +4,7 @@ import Script from "next/script";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Newsletter from "@/components/Newsletter";
+import { getTrips } from "@/lib/trips";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -27,7 +28,17 @@ export const metadata: Metadata = {
     "Dates, budgets, packing lists and a two-minute travel-style quiz — everything for your next trip, all in one calm place.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+// Trips now live in Supabase and can be edited at any time, so every page
+// reads them fresh per request instead of getting a build-time snapshot
+// baked into static HTML.
+export const dynamic = "force-dynamic";
+
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  // The footer's "Get inspired" list is the only reason every page fetches
+  // trips. This layout wraps the whole site, so a Supabase hiccup here
+  // should never 500 every route -- fall back to an empty list instead.
+  const trips = await getTrips().catch(() => []);
+
   return (
     <html
       lang="en"
@@ -51,7 +62,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           <Newsletter />
         </section>
-        <Footer />
+        <Footer demoTrips={trips} />
       </body>
     </html>
   );

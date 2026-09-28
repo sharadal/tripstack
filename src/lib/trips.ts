@@ -1,3 +1,5 @@
+import { supabase } from "@/lib/supabaseClient";
+
 export type Trip = {
   id: number;
   destination: string;
@@ -23,53 +25,61 @@ export const TRIP_TYPES = [
 
 export type TripStyle = (typeof TRIP_TYPES)[number];
 
-// Built-in showcase trips, shipped with the site so there's always
-// something to browse. User-created trips live in localStorage —
-// see src/lib/personalTrips.ts.
-export const trips: Trip[] = [
-  {
-    id: 1,
-    destination: "Lisbon, Portugal",
-    startDate: "2026-10-12",
-    endDate: "2026-10-19",
-    description:
-      "Cobbled streets, vintage trams and pastéis de nata — a slow week wandering the Alfama hills.",
-    activities: ["Walking tour", "Belem Tower", "Day trip to Sintra"],
-    budget: 1200,
-    spent: 300,
-    travelStyle: "City break",
-    image: "/images/trip-lisbon.jpg",
-  },
-  {
-    id: 2,
-    destination: "Kyoto, Japan",
-    startDate: "2027-03-02",
-    endDate: "2027-03-10",
-    description:
-      "Vermilion shrine gates, a quiet tea ceremony and a walk through the Arashiyama bamboo grove.",
-    activities: ["Fushimi Inari shrine", "Tea ceremony", "Bamboo grove hike"],
-    budget: 2800,
-    spent: 500,
-    travelStyle: "Culture",
-    image: "/images/trip-kyoto.jpg",
-  },
-  {
-    id: 3,
-    destination: "Cape Town, South Africa",
-    startDate: "2027-01-15",
-    endDate: "2027-01-22",
-    description:
-      "Table Mountain views, penguins at Boulders Beach and an afternoon of Cape wine tasting.",
-    activities: ["Table Mountain", "Boulders Beach penguins", "Wine tasting"],
-    budget: 2100,
-    spent: 400,
-    travelStyle: "Adventure",
-    image: "/images/trip-capetown.jpg",
-  },
-];
+type TripRow = {
+  id: number;
+  destination: string;
+  start_date: string;
+  end_date: string;
+  description: string;
+  activities: string[] | null;
+  packing_list: string[] | null;
+  notes: string | null;
+  budget: number;
+  spent: number;
+  travel_style: string;
+  image: string;
+};
 
-export function getTripById(id: number): Trip | undefined {
-  return trips.find((trip) => trip.id === id);
+function mapRow(row: TripRow): Trip {
+  return {
+    id: row.id,
+    destination: row.destination,
+    startDate: row.start_date,
+    endDate: row.end_date,
+    description: row.description,
+    activities: row.activities ?? [],
+    packingList: row.packing_list ?? undefined,
+    notes: row.notes ?? undefined,
+    budget: row.budget,
+    spent: row.spent,
+    travelStyle: row.travel_style,
+    image: row.image,
+  };
+}
+
+// Built-in showcase trips, shipped so there's always something to browse —
+// now backed by the public.trips table in Supabase (order by id to match
+// the original hardcoded order). User-created trips still live in
+// localStorage — see src/lib/personalTrips.ts.
+export async function getTrips(): Promise<Trip[]> {
+  const { data, error } = await supabase
+    .from("trips")
+    .select("*")
+    .order("id", { ascending: true });
+
+  if (error) throw new Error(error.message);
+  return (data ?? []).map(mapRow);
+}
+
+export async function getTripById(id: number): Promise<Trip | undefined> {
+  const { data, error } = await supabase
+    .from("trips")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error) throw new Error(error.message);
+  return data ? mapRow(data) : undefined;
 }
 
 export function formatDate(dateString: string) {
@@ -103,7 +113,7 @@ export function formatCurrency(amount: number) {
   }).format(amount);
 }
 
-export function nextDeparture(list: Trip[] = trips) {
+export function nextDeparture(list: Trip[]) {
   return list
     .filter((trip) => daysUntil(trip.startDate) >= 0)
     .sort((a, b) => daysUntil(a.startDate) - daysUntil(b.startDate))[0];
