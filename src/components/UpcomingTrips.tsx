@@ -14,6 +14,7 @@ import {
   CompassIcon,
   MapPinIcon,
   PlaneIcon,
+  SearchIcon,
   SparkleIcon,
 } from "@/components/icons";
 import { getTravelStyleMeta } from "@/lib/travelStyleMeta";
@@ -26,15 +27,46 @@ const ACTIVITY_TINTS = [
   "bg-rose-50 text-rose-900 dark:bg-rose-500/15 dark:text-rose-300",
 ];
 
+function describeEmptyState(query: string, category: string) {
+  const trimmed = query.trim();
+
+  if (trimmed && category !== "All") {
+    return `No trips match “${trimmed}” in ${category}.`;
+  }
+  if (trimmed) {
+    return `No trips match “${trimmed}”.`;
+  }
+  if (category !== "All") {
+    return `No trips in ${category} match your filters.`;
+  }
+  return "No trips to show yet.";
+}
+
 export default function UpcomingTrips({ trips }: { trips: Trip[] }) {
   const categories = ["All", ...new Set(trips.map((trip) => trip.travelStyle))];
   const [activeCategory, setActiveCategory] = useState("All");
+  const [query, setQuery] = useState("");
   const budgetEntries = useBudgetEntries();
 
-  const visibleTrips =
-    activeCategory === "All"
-      ? trips
-      : trips.filter((trip) => trip.travelStyle === activeCategory);
+  const trimmedQuery = query.trim().toLowerCase();
+
+  const visibleTrips = trips.filter((trip) => {
+    const matchesCategory =
+      activeCategory === "All" || trip.travelStyle === activeCategory;
+    const matchesQuery =
+      trimmedQuery === "" ||
+      trip.destination.toLowerCase().includes(trimmedQuery) ||
+      trip.description.toLowerCase().includes(trimmedQuery);
+
+    return matchesCategory && matchesQuery;
+  });
+
+  const hasActiveFilters = trimmedQuery !== "" || activeCategory !== "All";
+
+  const handleClearFilters = () => {
+    setQuery("");
+    setActiveCategory("All");
+  };
 
   return (
     <div>
@@ -49,36 +81,66 @@ export default function UpcomingTrips({ trips }: { trips: Trip[] }) {
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2">
-          {categories.map((category) => {
-            const meta =
-              category === "All" ? null : getTravelStyleMeta(category);
-            const Icon = meta?.icon ?? SparkleIcon;
-            const isActive = activeCategory === category;
+        <div className="flex flex-col gap-3 sm:items-end">
+          <div className="relative w-full sm:w-72">
+            <SearchIcon className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search destinations…"
+              aria-label="Search trips by destination or description"
+              className="w-full rounded-full border border-slate-200 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 placeholder-slate-400 transition focus:border-orange-400 focus:outline-none focus:ring-1 focus:ring-orange-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:placeholder-slate-500"
+            />
+          </div>
 
-            return (
-              <button
-                key={category}
-                type="button"
-                onClick={() => setActiveCategory(category)}
-                aria-pressed={isActive}
-                className={`inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 ${
-                  isActive
-                    ? "bg-teal-950 text-white shadow-sm"
-                    : "border border-slate-200 bg-white text-slate-600 hover:border-orange-300 hover:text-orange-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-orange-400 dark:hover:text-orange-300"
-                }`}
-              >
-                <Icon
-                  className={`h-3.5 w-3.5 ${isActive ? "text-orange-300" : ""}`}
-                />
-                {category}
-              </button>
-            );
-          })}
+          <div className="flex flex-wrap gap-2 sm:justify-end">
+            {categories.map((category) => {
+              const meta =
+                category === "All" ? null : getTravelStyleMeta(category);
+              const Icon = meta?.icon ?? SparkleIcon;
+              const isActive = activeCategory === category;
+
+              return (
+                <button
+                  key={category}
+                  type="button"
+                  onClick={() => setActiveCategory(category)}
+                  aria-pressed={isActive}
+                  className={`inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 ${
+                    isActive
+                      ? "bg-teal-950 text-white shadow-sm"
+                      : "border border-slate-200 bg-white text-slate-600 hover:border-orange-300 hover:text-orange-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-orange-400 dark:hover:text-orange-300"
+                  }`}
+                >
+                  <Icon
+                    className={`h-3.5 w-3.5 ${isActive ? "text-orange-300" : ""}`}
+                  />
+                  {category}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {visibleTrips.length === 0 && (
+          <div className="flex flex-col items-center gap-3 rounded-3xl border-2 border-dashed border-slate-200 bg-white/50 p-10 text-center sm:col-span-2 lg:col-span-3 dark:border-slate-800 dark:bg-slate-900/30">
+            <p className="text-slate-600 dark:text-slate-300">
+              {describeEmptyState(query, activeCategory)}
+            </p>
+            {hasActiveFilters && (
+              <button
+                type="button"
+                onClick={handleClearFilters}
+                className="text-sm font-medium text-teal-900 underline decoration-orange-400 underline-offset-4 transition hover:text-orange-700 dark:text-amber-300 dark:hover:text-amber-200"
+              >
+                Clear search &amp; filters
+              </button>
+            )}
+          </div>
+        )}
         {visibleTrips.map((trip, index) => {
           const [city, ...rest] = trip.destination.split(",");
           const country = rest.join(",").trim();
