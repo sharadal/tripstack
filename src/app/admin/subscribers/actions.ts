@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
-import { getCurrentUser } from "@/lib/supabase/server";
+import { isCurrentUserAdmin } from "@/lib/admin";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -11,9 +11,10 @@ const UNIQUE_VIOLATION = "23505";
 
 export type ActionState = { error?: string };
 
-// Server Actions are public endpoints, so each one re-checks the session
-// rather than trusting that the caller came from the protected page.
-const SIGNED_OUT_ERROR = "Your session has ended — sign in again.";
+// Server Actions are public endpoints, so each one re-checks the admin
+// allowlist rather than trusting that the caller came from the protected
+// page.
+const NOT_ADMIN_ERROR = "You don't have permission to do that.";
 
 function validate(firstName: string, email: string): string | undefined {
   if (!firstName) return "Enter a first name.";
@@ -25,7 +26,7 @@ export async function createSubscriber(
   _prevState: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  if (!(await getCurrentUser())) return { error: SIGNED_OUT_ERROR };
+  if (!(await isCurrentUserAdmin())) return { error: NOT_ADMIN_ERROR };
 
   const firstName = String(formData.get("firstName") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
@@ -54,7 +55,7 @@ export async function updateSubscriber(
   _prevState: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  if (!(await getCurrentUser())) return { error: SIGNED_OUT_ERROR };
+  if (!(await isCurrentUserAdmin())) return { error: NOT_ADMIN_ERROR };
 
   const id = String(formData.get("id") ?? "");
   const firstName = String(formData.get("firstName") ?? "").trim();
@@ -83,7 +84,7 @@ export async function updateSubscriber(
 }
 
 export async function deleteSubscriber(formData: FormData) {
-  if (!(await getCurrentUser())) return;
+  if (!(await isCurrentUserAdmin())) return;
 
   const id = String(formData.get("id") ?? "");
   if (!id) return;

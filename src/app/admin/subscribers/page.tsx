@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
-import { getCurrentUser } from "@/lib/supabase/server";
-import { UsersIcon } from "@/components/icons";
+import { getAdminStatus } from "@/lib/admin";
+import { PlaneIcon, UsersIcon } from "@/components/icons";
 import AddSubscriberForm from "./AddSubscriberForm";
 import SubscriberRow from "./SubscriberRow";
 
@@ -15,10 +16,11 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminSubscribersPage() {
-  // The admin client bypasses RLS, so only signed-in users get this far.
-  if (!(await getCurrentUser())) {
-    redirect("/login?next=/admin/subscribers");
-  }
+  // The admin client bypasses RLS, so only allowlisted admins get past
+  // this point.
+  const { user, isAdmin } = await getAdminStatus();
+  if (!user) redirect("/login?next=/admin/subscribers");
+  if (!isAdmin) return <NoAccess />;
 
   const { data: subscribers, error } = await supabaseAdmin
     .from("subscribers")
@@ -72,6 +74,34 @@ export default async function AdminSubscribersPage() {
             </p>
           )}
         </div>
+      </section>
+    </main>
+  );
+}
+
+function NoAccess() {
+  return (
+    <main className="flex-1 bg-stone-50 dark:bg-slate-950">
+      <section className="mx-auto flex max-w-2xl flex-col items-center px-6 py-24 text-center">
+        <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-900 to-teal-950 text-white shadow-sm">
+          <UsersIcon className="h-6 w-6" />
+        </span>
+        <p className="mt-6 text-xs font-semibold tracking-[0.2em] text-orange-700 uppercase dark:text-orange-400">
+          Admin
+        </p>
+        <h1 className="mt-3 font-serif text-3xl font-bold text-slate-900 sm:text-4xl dark:text-slate-50">
+          You don&apos;t have access to this page
+        </h1>
+        <p className="mt-3 max-w-md text-slate-600 dark:text-slate-300">
+          This area is only for TripStack admins.
+        </p>
+        <Link
+          href="/"
+          className="mt-8 inline-flex items-center justify-center gap-1.5 rounded-full bg-teal-950 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-teal-900 hover:shadow-md"
+        >
+          <PlaneIcon className="h-3.5 w-3.5 -rotate-45" />
+          Back to home
+        </Link>
       </section>
     </main>
   );

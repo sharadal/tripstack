@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Newsletter from "@/components/Newsletter";
 import { getTrips } from "@/lib/trips";
+import { isCurrentUserAdmin } from "@/lib/admin";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -37,7 +38,12 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   // The footer's "Get inspired" list is the only reason every page fetches
   // trips. This layout wraps the whole site, so a Supabase hiccup here
   // should never 500 every route -- fall back to an empty list instead.
-  const trips = await getTrips().catch(() => []);
+  // The admin check only decides whether to show the Admin nav link (the
+  // admin page and actions enforce access themselves), so it fails closed.
+  const [trips, isAdmin] = await Promise.all([
+    getTrips().catch(() => []),
+    isCurrentUserAdmin().catch(() => false),
+  ]);
 
   return (
     <html
@@ -53,7 +59,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             __html: `(function(){try{var s=localStorage.getItem("theme");var d=s?s==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",d);}catch(e){}})();`,
           }}
         />
-        <Header />
+        <Header isAdmin={isAdmin} />
         {children}
         <section
           id="newsletter"
