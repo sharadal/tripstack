@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { getCurrentUser } from "@/lib/supabase/server";
 import { UsersIcon } from "@/components/icons";
 import AddSubscriberForm from "./AddSubscriberForm";
 import SubscriberRow from "./SubscriberRow";
@@ -13,6 +15,11 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminSubscribersPage() {
+  // The admin client bypasses RLS, so only signed-in users get this far.
+  if (!(await getCurrentUser())) {
+    redirect("/login?next=/admin/subscribers");
+  }
+
   const { data: subscribers, error } = await supabaseAdmin
     .from("subscribers")
     .select("id, first_name, email, created_at")
