@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { getCurrentProfile, profileDisplayName } from "@/lib/profile";
 import ProfileAvatar from "@/components/ProfileAvatar";
 import { MapPinIcon } from "@/components/icons";
+import { getMyEssentialsLists } from "@/lib/essentials";
+import EssentialsSection from "./essentials/EssentialsSection";
 
 // Per-user page -- always rendered fresh for whoever is signed in.
 export const dynamic = "force-dynamic";
@@ -18,6 +20,7 @@ const labelClass =
 export default async function ProfilePage() {
   const { user, profile, error } = await getCurrentProfile();
   if (!user) redirect("/login?next=/profile");
+  const { lists, error: listsError } = await getMyEssentialsLists();
 
   const name = profileDisplayName(profile, user);
   const avatar =
@@ -82,6 +85,8 @@ export default async function ProfilePage() {
         >
           Edit profile
         </Link>
+
+        <EssentialsSection lists={lists} loadError={!!listsError} />
       </section>
     </main>
   );
