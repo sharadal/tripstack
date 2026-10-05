@@ -69,7 +69,7 @@ export default function Header({ isAdmin }: { isAdmin: boolean }) {
             Plan a trip
           </Link>
 
-          <AuthStatus />
+          <AuthStatus isAdmin={isAdmin} />
 
           <ThemeToggle />
 
@@ -89,9 +89,14 @@ export default function Header({ isAdmin }: { isAdmin: boolean }) {
         </nav>
       </div>
 
+      {/* Open height is capped to the space below the header bar (~4.5rem)
+          and scrolls beyond that, so the signed-in account links can never
+          be clipped off the bottom on short phones. */}
       <div
-        className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out sm:hidden ${
-          isMenuOpen ? "max-h-[32rem] opacity-100" : "max-h-0 opacity-0"
+        className={`transition-[max-height,opacity] duration-300 ease-in-out sm:hidden ${
+          isMenuOpen
+            ? "max-h-[calc(100dvh-4.5rem)] overflow-y-auto opacity-100"
+            : "max-h-0 overflow-hidden opacity-0"
         }`}
       >
         <nav className="flex flex-col gap-1 border-t border-teal-950/10 px-6 py-3 dark:border-white/10">
@@ -140,7 +145,10 @@ export default function Header({ isAdmin }: { isAdmin: boolean }) {
               Admin
             </Link>
           )}
-          <MobileAuthStatus onNavigate={() => setIsMenuOpen(false)} />
+          <MobileAuthStatus
+            isAdmin={isAdmin}
+            onNavigate={() => setIsMenuOpen(false)}
+          />
         </nav>
       </div>
     </header>

@@ -51,8 +51,42 @@ function useSignOut() {
   return { signOut, signingOut, error };
 }
 
+const menuLinkClass =
+  "block rounded-lg px-2 py-2 text-sm font-medium text-slate-700 transition hover:bg-orange-50 hover:text-orange-700 dark:text-slate-300 dark:hover:bg-orange-950/40 dark:hover:text-orange-300";
+
+// Account links shared by the desktop dropdown and the mobile menu. Admin
+// only appears for allowlisted admins; the admin page still enforces access
+// itself, so this is just about what to show.
+function AccountLinks({
+  isAdmin,
+  onNavigate,
+}: {
+  isAdmin: boolean;
+  onNavigate: () => void;
+}) {
+  return (
+    <nav aria-label="Account" className="flex flex-col gap-0.5">
+      <Link href="/profile" onClick={onNavigate} className={menuLinkClass}>
+        Profile
+      </Link>
+      <Link href="/settings" onClick={onNavigate} className={menuLinkClass}>
+        Settings
+      </Link>
+      {isAdmin && (
+        <Link
+          href="/admin/subscribers"
+          onClick={onNavigate}
+          className={menuLinkClass}
+        >
+          Admin
+        </Link>
+      )}
+    </nav>
+  );
+}
+
 // Sign-in link or avatar menu for the desktop header.
-export function AuthStatus() {
+export function AuthStatus({ isAdmin }: { isAdmin: boolean }) {
   const { user, loading } = useAuthUser();
   const pathname = usePathname();
   const { signOut, signingOut, error } = useSignOut();
@@ -64,8 +98,15 @@ export function AuthStatus() {
     const close = (e: MouseEvent) => {
       if (!menuRef.current?.contains(e.target as Node)) setOpen(false);
     };
+    const closeOnEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
     document.addEventListener("mousedown", close);
-    return () => document.removeEventListener("mousedown", close);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("mousedown", close);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
   }, [open]);
 
   if (loading) {
@@ -112,13 +153,16 @@ export function AuthStatus() {
           <p className="truncate text-sm text-slate-500 dark:text-slate-400">
             {user.email}
           </p>
+          <div className="-mx-2 mt-3 border-t border-slate-100 pt-3 dark:border-slate-800">
+            <AccountLinks isAdmin={isAdmin} onNavigate={() => setOpen(false)} />
+          </div>
           <button
             type="button"
             onClick={signOut}
             disabled={signingOut}
-            className="mt-4 w-full rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-orange-300 hover:text-orange-700 disabled:opacity-60 dark:border-slate-700 dark:text-slate-200 dark:hover:border-orange-400 dark:hover:text-orange-300"
+            className="mt-3 w-full rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-orange-300 hover:text-orange-700 disabled:opacity-60 dark:border-slate-700 dark:text-slate-200 dark:hover:border-orange-400 dark:hover:text-orange-300"
           >
-            {signingOut ? "Signing out…" : "Sign out"}
+            {signingOut ? "Logging out…" : "Logout"}
           </button>
           {error && (
             <p role="alert" className="mt-2 text-xs text-red-600 dark:text-red-400">
@@ -132,7 +176,13 @@ export function AuthStatus() {
 }
 
 // Account section at the bottom of the mobile menu.
-export function MobileAuthStatus({ onNavigate }: { onNavigate: () => void }) {
+export function MobileAuthStatus({
+  isAdmin,
+  onNavigate,
+}: {
+  isAdmin: boolean;
+  onNavigate: () => void;
+}) {
   const { user, loading } = useAuthUser();
   const pathname = usePathname();
   const { signOut, signingOut, error } = useSignOut();
@@ -164,6 +214,9 @@ export function MobileAuthStatus({ onNavigate }: { onNavigate: () => void }) {
           </p>
         </div>
       </div>
+      <div className="-mx-2 mt-3">
+        <AccountLinks isAdmin={isAdmin} onNavigate={onNavigate} />
+      </div>
       <button
         type="button"
         onClick={async () => {
@@ -173,7 +226,7 @@ export function MobileAuthStatus({ onNavigate }: { onNavigate: () => void }) {
         disabled={signingOut}
         className="mt-3 w-full rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-orange-300 hover:text-orange-700 disabled:opacity-60 dark:border-slate-700 dark:text-slate-200 dark:hover:border-orange-400 dark:hover:text-orange-300"
       >
-        {signingOut ? "Signing out…" : "Sign out"}
+        {signingOut ? "Logging out…" : "Logout"}
       </button>
       {error && (
         <p role="alert" className="mt-2 text-xs text-red-600 dark:text-red-400">
