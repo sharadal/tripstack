@@ -6,6 +6,7 @@ import { getAdminStatus } from "@/lib/admin";
 import { PlaneIcon, UsersIcon } from "@/components/icons";
 import AddSubscriberForm from "./AddSubscriberForm";
 import SubscriberRow from "./SubscriberRow";
+import EmptyState from "@/components/EmptyState";
 
 // Always read live data — this page is a private admin view, not a
 // candidate for build-time prerendering.
@@ -48,12 +49,22 @@ export default async function AdminSubscribersPage() {
           <AddSubscriberForm />
         </div>
 
-        <div className="mt-10 overflow-x-auto rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          {error ? (
-            <p className="p-8 text-sm text-red-600 dark:text-red-400">
-              Couldn&apos;t load subscribers: {error.message}
-            </p>
-          ) : subscribers && subscribers.length > 0 ? (
+        {error ? (
+          <p
+            role="alert"
+            className="mt-10 rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-950/40 dark:text-red-300"
+          >
+            Couldn&apos;t load subscribers: {error.message}
+          </p>
+        ) : !subscribers || subscribers.length === 0 ? (
+          <EmptyState
+            icon={UsersIcon}
+            title="No subscribers yet"
+            description="People who sign up through the newsletter form will appear here. You can also add someone above."
+            className="mt-10"
+          />
+        ) : (
+          <div className="mt-10 overflow-x-auto rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
             <table className="w-full text-left text-sm">
               <thead className="border-b border-slate-200 text-xs font-semibold tracking-[0.1em] text-slate-500 uppercase dark:border-slate-800 dark:text-slate-400">
                 <tr>
@@ -69,12 +80,8 @@ export default async function AdminSubscribersPage() {
                 ))}
               </tbody>
             </table>
-          ) : (
-            <p className="p-8 text-sm text-slate-500 dark:text-slate-400">
-              No subscribers yet.
-            </p>
-          )}
-        </div>
+          </div>
+        )}
       </section>
     </main>
   );

@@ -3,18 +3,13 @@
 import Link from "next/link";
 import { usePersonalTrips } from "@/hooks/usePersonalTrips";
 import TripDetailView from "@/components/TripDetailView";
+import { TripDetailSkeleton } from "@/components/Skeletons";
 
 export default function PersonalTripDetail({ id }: { id: number }) {
   const { trips, ready } = usePersonalTrips();
 
   if (!ready) {
-    return (
-      <main className="flex-1 bg-stone-50 dark:bg-slate-950">
-        <div className="mx-auto max-w-2xl px-6 py-24 text-center text-slate-400 dark:text-slate-500">
-          Loading trip…
-        </div>
-      </main>
-    );
+    return <TripDetailSkeleton />;
   }
 
   const trip = trips.find((candidate) => candidate.id === id);

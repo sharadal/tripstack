@@ -16,6 +16,7 @@ import { getTripSpent } from "@/lib/budget";
 import UpcomingTrips from "@/components/UpcomingTrips";
 import TripQuiz from "@/components/TripQuiz";
 import ScrollReveal from "@/components/ScrollReveal";
+import EmptyState from "@/components/EmptyState";
 import { PlaneIcon, SparkleIcon, WalletIcon } from "@/components/icons";
 
 export default function HomeContent({ demoTrips }: { demoTrips: Trip[] }) {
@@ -54,11 +55,17 @@ export default function HomeContent({ demoTrips }: { demoTrips: Trip[] }) {
         <div className="relative mx-auto max-w-6xl">
           <span className="animate-fade-in-up inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-1.5 text-xs font-semibold tracking-[0.15em] text-stone-100 uppercase ring-1 ring-white/25 backdrop-blur">
             <SparkleIcon className="h-3.5 w-3.5 text-amber-300" />
-            {trips.length} trips planned
-            <span className="hidden sm:inline">
-              {" "}
-              · {formatCurrency(totalBudget)} budgeted
-            </span>
+            {trips.length === 0 ? (
+              "Your first trip starts here"
+            ) : (
+              <>
+                {trips.length} {trips.length === 1 ? "trip" : "trips"} planned
+                <span className="hidden sm:inline">
+                  {" "}
+                  · {formatCurrency(totalBudget)} budgeted
+                </span>
+              </>
+            )}
           </span>
 
           <h1
@@ -166,63 +173,82 @@ export default function HomeContent({ demoTrips }: { demoTrips: Trip[] }) {
             Budget at a glance
           </h2>
 
-          <div className="grid gap-6 sm:grid-cols-3">
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow duration-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
-              <p className="text-sm text-slate-500 dark:text-slate-400">Total budget</p>
-              <p className="mt-1 text-2xl font-semibold text-slate-900 dark:text-slate-50">
-                {formatCurrency(totalBudget)}
-              </p>
-            </div>
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow duration-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
-              <p className="text-sm text-slate-500 dark:text-slate-400">Committed so far</p>
-              <p className="mt-1 text-2xl font-semibold text-orange-600 dark:text-orange-400">
-                {formatCurrency(totalSpent)}
-              </p>
-            </div>
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow duration-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
-              <p className="text-sm text-slate-500 dark:text-slate-400">Remaining</p>
-              <p className="mt-1 text-2xl font-semibold text-teal-800 dark:text-teal-300">
-                {formatCurrency(totalRemaining)}
-              </p>
-            </div>
-          </div>
+          {trips.length === 0 ? (
+            <EmptyState
+              icon={WalletIcon}
+              title="No budgets yet"
+              description="Add a trip with a budget and you'll see what's committed and what's left, right here."
+              action={
+                <Link
+                  href="/trips/new"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-full bg-teal-950 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-teal-900 hover:shadow-md"
+                >
+                  <PlaneIcon className="h-3.5 w-3.5 -rotate-45" />
+                  Plan a trip
+                </Link>
+              }
+            />
+          ) : (
+            <>
+              <div className="grid gap-6 sm:grid-cols-3">
+                <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow duration-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+                  <p className="text-sm text-slate-500 dark:text-slate-400">Total budget</p>
+                  <p className="mt-1 text-2xl font-semibold text-slate-900 dark:text-slate-50">
+                    {formatCurrency(totalBudget)}
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow duration-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+                  <p className="text-sm text-slate-500 dark:text-slate-400">Committed so far</p>
+                  <p className="mt-1 text-2xl font-semibold text-orange-600 dark:text-orange-400">
+                    {formatCurrency(totalSpent)}
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow duration-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+                  <p className="text-sm text-slate-500 dark:text-slate-400">Remaining</p>
+                  <p className="mt-1 text-2xl font-semibold text-teal-800 dark:text-teal-300">
+                    {formatCurrency(totalRemaining)}
+                  </p>
+                </div>
+              </div>
 
-          <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <ul className="divide-y divide-slate-100 dark:divide-slate-800">
-              {trips.map((trip) => {
-                const spent = getTripSpent(trip, budgetEntries);
-                const percentSpent = Math.round((spent / trip.budget) * 100);
-                const overBudget = spent > trip.budget;
+              <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                <ul className="divide-y divide-slate-100 dark:divide-slate-800">
+                  {trips.map((trip) => {
+                    const spent = getTripSpent(trip, budgetEntries);
+                    const percentSpent = Math.round((spent / trip.budget) * 100);
+                    const overBudget = spent > trip.budget;
 
-                return (
-                  <li
-                    key={trip.id}
-                    className="flex flex-col gap-2 py-3 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
-                  >
-                    <div>
-                      <p className="text-sm font-medium text-slate-900 dark:text-slate-50">
-                        {trip.destination}
-                      </p>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">
-                        {formatCurrency(spent)} committed of{" "}
-                        {formatCurrency(trip.budget)}
-                      </p>
-                    </div>
-                    <div className="h-2 w-full rounded-full bg-slate-100 sm:w-40 dark:bg-slate-800">
-                      <div
-                        className={`h-2 rounded-full bg-gradient-to-r ${
-                          overBudget
-                            ? "from-red-500 to-red-600"
-                            : "from-orange-400 to-orange-600"
-                        }`}
-                        style={{ width: `${Math.min(percentSpent, 100)}%` }}
-                      />
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
+                    return (
+                      <li
+                        key={trip.id}
+                        className="flex flex-col gap-2 py-3 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
+                      >
+                        <div>
+                          <p className="text-sm font-medium text-slate-900 dark:text-slate-50">
+                            {trip.destination}
+                          </p>
+                          <p className="text-xs text-slate-500 dark:text-slate-400">
+                            {formatCurrency(spent)} committed of{" "}
+                            {formatCurrency(trip.budget)}
+                          </p>
+                        </div>
+                        <div className="h-2 w-full rounded-full bg-slate-100 sm:w-40 dark:bg-slate-800">
+                          <div
+                            className={`h-2 rounded-full bg-gradient-to-r ${
+                              overBudget
+                                ? "from-red-500 to-red-600"
+                                : "from-orange-400 to-orange-600"
+                            }`}
+                            style={{ width: `${Math.min(percentSpent, 100)}%` }}
+                          />
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </>
+          )}
         </ScrollReveal>
       </section>
 

@@ -1,5 +1,6 @@
 import type { EssentialsList } from "@/lib/essentials";
-import { CompassIcon } from "@/components/icons";
+import { CompassIcon, SparkleIcon } from "@/components/icons";
+import EmptyState from "@/components/EmptyState";
 import EssentialsListForm from "./EssentialsListForm";
 import EssentialsListCard from "./EssentialsListCard";
 
@@ -51,9 +52,12 @@ export default function EssentialsSection({
           ))}
         </div>
       ) : (
-        <p className="mt-6 text-sm text-slate-500 dark:text-slate-400">
-          No lists yet — add your first one above.
-        </p>
+        <EmptyState
+          icon={SparkleIcon}
+          title="No packing lists yet"
+          description="Save your first one with the form above — like “Beach weekend” or “Carry-on only”."
+          className="mt-6"
+        />
       )}
     </section>
   );

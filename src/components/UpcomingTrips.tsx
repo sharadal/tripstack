@@ -10,6 +10,7 @@ import {
   getNights,
 } from "@/lib/trips";
 import CountdownBadge from "@/components/CountdownBadge";
+import EmptyState from "@/components/EmptyState";
 import {
   CompassIcon,
   MapPinIcon,
@@ -128,22 +129,31 @@ export default function UpcomingTrips({ trips }: { trips: Trip[] }) {
         </div>
       </div>
 
+      {/* Lets screen-reader users know the list changed as they type. */}
+      <p className="sr-only" aria-live="polite">
+        {visibleTrips.length} {visibleTrips.length === 1 ? "trip" : "trips"}{" "}
+        shown
+      </p>
+
       <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {visibleTrips.length === 0 && (
-          <div className="flex flex-col items-center gap-3 rounded-3xl border-2 border-dashed border-slate-200 bg-white/50 p-10 text-center sm:col-span-2 lg:col-span-3 dark:border-slate-800 dark:bg-slate-900/30">
-            <p className="text-slate-600 dark:text-slate-300">
-              {describeEmptyState(query, activeCategory)}
-            </p>
-            {hasActiveFilters && (
+        {/* With no filters the "Build your next adventure" card below is
+            already the call to action, so this only covers filtered views. */}
+        {visibleTrips.length === 0 && hasActiveFilters && (
+          <EmptyState
+            icon={SearchIcon}
+            title={describeEmptyState(query, activeCategory)}
+            description="Try another destination or travel style, or clear the search to see every trip."
+            className="sm:col-span-2 lg:col-span-3"
+            action={
               <button
                 type="button"
                 onClick={handleClearFilters}
-                className="text-sm font-medium text-teal-900 underline decoration-orange-400 underline-offset-4 transition hover:text-orange-700 dark:text-amber-300 dark:hover:text-amber-200"
+                className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:border-orange-300 hover:text-orange-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-orange-400 dark:hover:text-orange-300"
               >
                 Clear search &amp; filters
               </button>
-            )}
-          </div>
+            }
+          />
         )}
         {visibleTrips.map((trip, index) => {
           const [city, ...rest] = trip.destination.split(",");
