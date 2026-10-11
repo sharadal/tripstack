@@ -11,7 +11,7 @@ type Subscriber = {
 };
 
 const inputClass =
-  "w-full rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-900 transition focus:border-orange-400 focus:outline-none focus:ring-1 focus:ring-orange-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50";
+  "w-full rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-900 transition focus:border-orange-600 focus:outline-none focus:ring-1 focus:ring-orange-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50";
 
 const initialState: ActionState = {};
 
@@ -53,6 +53,7 @@ export default function SubscriberRow({
               name="firstName"
               defaultValue={subscriber.first_name}
               placeholder="First name"
+              aria-label="First name"
               required
               className={`${inputClass} max-w-[10rem]`}
             />
@@ -61,6 +62,7 @@ export default function SubscriberRow({
               type="email"
               defaultValue={subscriber.email}
               placeholder="Email"
+              aria-label="Email"
               required
               className={`${inputClass} max-w-[16rem]`}
             />
@@ -80,7 +82,7 @@ export default function SubscriberRow({
             </button>
           </form>
           {state.error && (
-            <p className="mt-2 text-xs font-medium text-red-600 dark:text-red-400">
+            <p role="alert" className="mt-2 text-xs font-medium text-red-600 dark:text-red-400">
               {state.error}
             </p>
           )}

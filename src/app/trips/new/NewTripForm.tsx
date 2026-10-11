@@ -10,11 +10,13 @@ import { PlaneIcon } from "@/components/icons";
 import TagList from "@/components/TagList";
 
 const inputClass =
-  "w-full rounded-full border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition focus:border-orange-400 focus:outline-none focus:ring-1 focus:ring-orange-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:placeholder-slate-500";
+  "w-full rounded-full border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition focus:border-orange-600 focus:outline-none focus:ring-1 focus:ring-orange-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:placeholder-slate-500";
 
 export default function NewTripForm() {
   const router = useRouter();
   const [travelStyle, setTravelStyle] = useState("City");
+  // Drives the end date's `min`, so the picker can't go before the start.
+  const [startDate, setStartDate] = useState("");
   const [activities, setActivities] = useState<string[]>([]);
   const [packingList, setPackingList] = useState<string[]>([]);
   const [error, setError] = useState<string>();
@@ -120,6 +122,8 @@ export default function NewTripForm() {
             type="date"
             name="startDate"
             required
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
             className={`mt-2 ${inputClass}`}
           />
         </div>
@@ -135,15 +139,16 @@ export default function NewTripForm() {
             type="date"
             name="endDate"
             required
+            min={startDate || undefined}
             className={`mt-2 ${inputClass}`}
           />
         </div>
       </div>
 
-      <div className="mt-6">
-        <label className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase dark:text-slate-400">
+      <fieldset className="mt-6">
+        <legend className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase dark:text-slate-400">
           Trip type
-        </label>
+        </legend>
         <div className="mt-2 flex flex-wrap gap-2">
           {TRIP_TYPES.map((type) => {
             const meta = getTravelStyleMeta(type);
@@ -170,7 +175,7 @@ export default function NewTripForm() {
             );
           })}
         </div>
-      </div>
+      </fieldset>
 
       <div className="mt-6 grid gap-6 sm:grid-cols-2">
         <div>
@@ -266,7 +271,12 @@ export default function NewTripForm() {
       </div>
 
       {error && (
-        <p className="mt-6 text-sm font-medium text-red-600 dark:text-red-400">{error}</p>
+        <p
+          role="alert"
+          className="mt-6 rounded-2xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700 dark:bg-red-950/40 dark:text-red-300"
+        >
+          {error}
+        </p>
       )}
 
       <div className="mt-8 flex items-center gap-4 border-t border-slate-100 pt-6 dark:border-slate-800">

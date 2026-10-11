@@ -88,8 +88,16 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             __html: `(function(){try{var s=localStorage.getItem("theme");var d=s?s==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",d);}catch(e){}})();`,
           }}
         />
+        <a
+          href="#main-content"
+          className="sr-only rounded-full bg-teal-950 text-sm font-semibold text-white shadow-lg focus:not-sr-only focus:px-5 focus:py-2.5 focus:fixed focus:left-4 focus:top-4 focus:z-50"
+        >
+          Skip to content
+        </a>
         <Header isAdmin={isAdmin} />
-        {children}
+        <div id="main-content" tabIndex={-1} className="flex flex-1 flex-col focus:outline-none">
+          {children}
+        </div>
         <section
           id="newsletter"
           aria-label="Newsletter signup"

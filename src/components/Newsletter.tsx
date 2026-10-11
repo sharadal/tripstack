@@ -62,7 +62,10 @@ export default function Newsletter() {
 
   if (submitted) {
     return (
-      <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm sm:p-10 dark:border-slate-800 dark:bg-slate-900">
+      <div
+        role="status"
+        className="rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm sm:p-10 dark:border-slate-800 dark:bg-slate-900"
+      >
         <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-teal-950 text-white">
           <SparkleIcon className="h-5 w-5 text-amber-300" />
         </span>
@@ -120,14 +123,21 @@ export default function Newsletter() {
               onChange={(e) => setFirstName(e.target.value)}
               placeholder="Jamie"
               aria-invalid={Boolean(errors.firstName)}
+              aria-describedby={
+                errors.firstName ? "newsletter-first-name-error" : undefined
+              }
               className={`${inputClass} ${
                 errors.firstName
                   ? "border-red-300 focus:border-red-400 focus:ring-red-400 dark:border-red-500/50"
-                  : "border-slate-200 focus:border-orange-400 focus:ring-orange-400 dark:border-slate-700"
+                  : "border-slate-200 focus:border-orange-600 focus:ring-orange-600 dark:border-slate-700"
               }`}
             />
             {errors.firstName && (
-              <p className="mt-1.5 text-xs font-medium text-red-600 dark:text-red-400">
+              <p
+                id="newsletter-first-name-error"
+                role="alert"
+                className="mt-1.5 text-xs font-medium text-red-600 dark:text-red-400"
+              >
                 {errors.firstName}
               </p>
             )}
@@ -147,14 +157,21 @@ export default function Newsletter() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="jamie@example.com"
               aria-invalid={Boolean(errors.email)}
+              aria-describedby={
+                errors.email ? "newsletter-email-error" : undefined
+              }
               className={`${inputClass} ${
                 errors.email
                   ? "border-red-300 focus:border-red-400 focus:ring-red-400 dark:border-red-500/50"
-                  : "border-slate-200 focus:border-orange-400 focus:ring-orange-400 dark:border-slate-700"
+                  : "border-slate-200 focus:border-orange-600 focus:ring-orange-600 dark:border-slate-700"
               }`}
             />
             {errors.email && (
-              <p className="mt-1.5 text-xs font-medium text-red-600 dark:text-red-400">
+              <p
+                id="newsletter-email-error"
+                role="alert"
+                className="mt-1.5 text-xs font-medium text-red-600 dark:text-red-400"
+              >
                 {errors.email}
               </p>
             )}
@@ -162,7 +179,10 @@ export default function Newsletter() {
         </div>
 
         {errors.form && (
-          <p className="mt-4 text-sm font-medium text-red-600 dark:text-red-400">
+          <p
+            role="alert"
+            className="mt-4 rounded-2xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700 dark:bg-red-950/40 dark:text-red-300"
+          >
             {errors.form}
           </p>
         )}

@@ -90,7 +90,7 @@ export default function UpcomingTrips({ trips }: { trips: Trip[] }) {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search destinations…"
               aria-label="Search trips by destination or description"
-              className="w-full rounded-full border border-slate-200 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 placeholder-slate-400 transition focus:border-orange-400 focus:outline-none focus:ring-1 focus:ring-orange-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:placeholder-slate-500"
+              className="w-full rounded-full border border-slate-200 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 placeholder-slate-400 transition focus:border-orange-600 focus:outline-none focus:ring-1 focus:ring-orange-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:placeholder-slate-500"
             />
           </div>
 

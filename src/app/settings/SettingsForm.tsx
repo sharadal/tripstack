@@ -13,7 +13,7 @@ import ProfileAvatar from "@/components/ProfileAvatar";
 import { updateProfile, type ProfileActionState } from "./actions";
 
 const inputClass =
-  "w-full rounded-full border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition focus:border-orange-400 focus:outline-none focus:ring-1 focus:ring-orange-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:placeholder-slate-500";
+  "w-full rounded-full border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition focus:border-orange-600 focus:outline-none focus:ring-1 focus:ring-orange-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:placeholder-slate-500";
 
 const labelClass =
   "text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase dark:text-slate-400";

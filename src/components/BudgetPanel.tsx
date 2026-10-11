@@ -121,7 +121,7 @@ export default function BudgetPanel({ trip }: { trip: Trip }) {
             onChange={(e) => setLabel(e.target.value)}
             placeholder="What for? (optional)"
             aria-label="Expense description"
-            className="min-w-0 flex-1 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-900 placeholder-slate-400 transition focus:border-orange-400 focus:outline-none focus:ring-1 focus:ring-orange-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:placeholder-slate-500"
+            className="min-w-0 flex-1 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-900 placeholder-slate-400 transition focus:border-orange-600 focus:outline-none focus:ring-1 focus:ring-orange-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:placeholder-slate-500"
           />
           <input
             type="number"
@@ -131,7 +131,9 @@ export default function BudgetPanel({ trip }: { trip: Trip }) {
             onChange={(e) => setAmount(e.target.value)}
             placeholder="Amount (€)"
             aria-label="Expense amount in euros"
-            className="w-32 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-900 placeholder-slate-400 transition focus:border-orange-400 focus:outline-none focus:ring-1 focus:ring-orange-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:placeholder-slate-500"
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? "expense-error" : undefined}
+            className="w-32 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-900 placeholder-slate-400 transition focus:border-orange-600 focus:outline-none focus:ring-1 focus:ring-orange-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-50 dark:placeholder-slate-500"
           />
           <button
             type="submit"
@@ -141,7 +143,11 @@ export default function BudgetPanel({ trip }: { trip: Trip }) {
           </button>
         </form>
         {error && (
-          <p className="mt-2 text-xs font-medium text-red-600 dark:text-red-400">
+          <p
+            id="expense-error"
+            role="alert"
+            className="mt-2 text-xs font-medium text-red-600 dark:text-red-400"
+          >
             {error}
           </p>
         )}

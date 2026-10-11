@@ -23,7 +23,7 @@ export default function Header({ isAdmin }: { isAdmin: boolean }) {
           <span className="text-lg font-bold text-slate-900 dark:text-white">TripStack</span>
         </Link>
 
-        <nav className="flex items-center gap-6">
+        <nav aria-label="Main" className="flex items-center gap-6">
           <Link
             href="/#upcoming"
             className="group relative hidden text-sm font-medium text-slate-600 transition hover:text-teal-900 sm:inline dark:text-slate-300 dark:hover:text-amber-300"
@@ -78,6 +78,7 @@ export default function Header({ isAdmin }: { isAdmin: boolean }) {
             onClick={() => setIsMenuOpen((prev) => !prev)}
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
             className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition-all duration-200 hover:scale-105 hover:border-orange-300 hover:text-orange-700 sm:hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-orange-400 dark:hover:text-orange-300"
           >
             {isMenuOpen ? (
@@ -91,15 +92,19 @@ export default function Header({ isAdmin }: { isAdmin: boolean }) {
 
       {/* Open height is capped to the space below the header bar (~4.5rem)
           and scrolls beyond that, so the signed-in account links can never
-          be clipped off the bottom on short phones. */}
+          be clipped off the bottom on short phones. While closed it is
+          inert, so keyboard and screen-reader users can't land on links
+          that are collapsed out of sight. */}
       <div
+        id="mobile-menu"
+        inert={!isMenuOpen}
         className={`transition-[max-height,opacity] duration-300 ease-in-out sm:hidden ${
           isMenuOpen
             ? "max-h-[calc(100dvh-4.5rem)] overflow-y-auto opacity-100"
             : "max-h-0 overflow-hidden opacity-0"
         }`}
       >
-        <nav className="flex flex-col gap-1 border-t border-teal-950/10 px-6 py-3 dark:border-white/10">
+        <nav aria-label="Mobile" className="flex flex-col gap-1 border-t border-teal-950/10 px-6 py-3 dark:border-white/10">
           <Link
             href="/trips/new"
             onClick={() => setIsMenuOpen(false)}

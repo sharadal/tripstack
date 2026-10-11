@@ -27,6 +27,21 @@ body {
   color: var(--foreground);
 }
 
+/* A clear, on-brand ring for keyboard focus. It sits in the base layer so
+   inputs that draw their own focus border (focus:outline-none) keep it. */
+@layer base {
+  :where(a, button, summary, [tabindex]):focus-visible,
+  label:has(+ input[type="file"]:focus-visible) {
+    outline: 2px solid oklch(64.6% 0.222 41.116); /* orange-600 */
+    outline-offset: 2px;
+  }
+
+  .dark :where(a, button, summary, [tabindex]):focus-visible,
+  .dark label:has(+ input[type="file"]:focus-visible) {
+    outline-color: oklch(87.9% 0.169 91.605); /* amber-300 */
+  }
+}
+
 @keyframes float-y {
   0%,
   100% {
