@@ -1,6 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { PlaneIcon } from "@/components/icons";
 import NewTripForm from "./NewTripForm";
+
+// A form for trips saved in this browser -- nothing here worth indexing.
+export const metadata: Metadata = {
+  title: "Plan a new trip",
+  description:
+    "Add a trip to TripStack with its dates, budget and travel style.",
+  robots: { index: false, follow: true },
+};
 
 export default function NewTrip() {
   return (

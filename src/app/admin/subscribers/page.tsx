@@ -12,7 +12,8 @@ import SubscriberRow from "./SubscriberRow";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Subscribers — Admin — TripStack",
+  title: "Subscribers — Admin",
+  robots: { index: false, follow: false },
 };
 
 export default async function AdminSubscribersPage() {

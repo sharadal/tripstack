@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import Newsletter from "@/components/Newsletter";
 import { getTrips } from "@/lib/trips";
 import { isCurrentUserAdmin } from "@/lib/admin";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -23,10 +24,38 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
 });
 
+const defaultTitle = "TripStack — Plan your next adventure";
+const defaultDescription =
+  "Dates, budgets, packing lists and a two-minute travel-style quiz — everything for your next trip, all in one calm place.";
+
 export const metadata: Metadata = {
-  title: "TripStack — Plan your next adventure",
-  description:
-    "Dates, budgets, packing lists and a two-minute travel-style quiz — everything for your next trip, all in one calm place.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: defaultTitle,
+    template: `%s — ${SITE_NAME}`,
+  },
+  description: defaultDescription,
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    title: defaultTitle,
+    description: defaultDescription,
+    locale: "en_US",
+    images: [
+      {
+        url: "/images/hero-travel.jpg",
+        width: 1920,
+        height: 1280,
+        alt: "A calm mountain lake reflecting rocky peaks and pine forest",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: defaultTitle,
+    description: defaultDescription,
+    images: ["/images/hero-travel.jpg"],
+  },
 };
 
 // Trips now live in Supabase and can be edited at any time, so every page

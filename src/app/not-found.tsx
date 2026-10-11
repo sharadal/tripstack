@@ -3,7 +3,7 @@ import Link from "next/link";
 import { CompassIcon, PlaneIcon } from "@/components/icons";
 
 export const metadata: Metadata = {
-  title: "Page not found — TripStack",
+  title: "Page not found",
 };
 
 export default function NotFound() {

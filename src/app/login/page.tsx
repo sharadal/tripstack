@@ -7,7 +7,10 @@ import { getCurrentUser } from "@/lib/supabase/server";
 import { safeNextPath } from "@/lib/supabase/redirect";
 
 export const metadata: Metadata = {
-  title: "Sign in — TripStack",
+  title: "Sign in",
+  description:
+    "Sign in to TripStack with Google to save your profile and packing lists.",
+  robots: { index: false, follow: true },
 };
 
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {

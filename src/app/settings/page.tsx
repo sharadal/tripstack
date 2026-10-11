@@ -8,7 +8,8 @@ import SettingsForm from "./SettingsForm";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Settings — TripStack",
+  title: "Settings",
+  robots: { index: false, follow: false },
 };
 
 export default async function SettingsPage() {
