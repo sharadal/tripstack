@@ -34,6 +34,8 @@ export async function generateMetadata({
   const description = trip.description;
   const url = `/trips/${trip.id}`;
 
+  // The share image comes from opengraph-image.tsx / twitter-image.tsx in
+  // this folder: a generated 1200x630 card instead of the raw trip photo.
   return {
     title,
     description,
@@ -44,13 +46,11 @@ export async function generateMetadata({
       title: `${title} — ${SITE_NAME}`,
       description,
       url,
-      images: [{ url: trip.image, alt: trip.destination }],
     },
     twitter: {
       card: "summary_large_image",
       title: `${title} — ${SITE_NAME}`,
       description,
-      images: [trip.image],
     },
   };
 }
