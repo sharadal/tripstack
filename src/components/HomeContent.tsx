@@ -69,10 +69,11 @@ export default function HomeContent({ demoTrips }: { demoTrips: Trip[] }) {
           </span>
 
           <h1
-            className="animate-fade-in-up mt-6 max-w-2xl font-serif text-4xl leading-tight text-stone-50 sm:text-5xl lg:text-6xl"
+            className="animate-fade-in-up mt-6 max-w-2xl font-serif text-4xl leading-tight text-stone-50 sm:text-5xl lg:max-w-none lg:text-6xl"
             style={{ animationDelay: "80ms" }}
           >
             <span className="font-bold">Every trip you&apos;re dreaming about,</span>{" "}
+            <br className="hidden lg:block" />
             in one{" "}
             <span className="relative inline-block font-bold text-amber-300">
               calm place.
@@ -141,10 +142,14 @@ export default function HomeContent({ demoTrips }: { demoTrips: Trip[] }) {
               </div>
               <div className="shrink-0 border-l border-slate-200 pl-4 sm:pl-6 dark:border-slate-700">
                 <p className="text-3xl font-bold text-orange-600 transition-transform duration-300 group-hover:scale-110 dark:text-orange-400">
-                  {upcomingDays}
+                  {upcomingDays === 0 ? "Today" : upcomingDays}
                 </p>
                 <p className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase dark:text-slate-400">
-                  {upcomingDays === 1 ? "Day to go" : "Days to go"}
+                  {upcomingDays === 0
+                    ? "Departure day"
+                    : upcomingDays === 1
+                      ? "Day to go"
+                      : "Days to go"}
                 </p>
               </div>
             </div>
