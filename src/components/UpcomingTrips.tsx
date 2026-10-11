@@ -27,6 +27,10 @@ const ACTIVITY_TINTS = [
   "bg-rose-50 text-rose-900 dark:bg-rose-500/15 dark:text-rose-300",
 ];
 
+// Cards show a few activities and a "+N" chip for the rest, so long
+// lists don't make one card much taller than its neighbours.
+const MAX_CARD_ACTIVITIES = 3;
+
 function describeEmptyState(query: string, category: string) {
   const trimmed = query.trim();
 
@@ -149,13 +153,16 @@ export default function UpcomingTrips({ trips }: { trips: Trip[] }) {
           const overBudget = spent > trip.budget;
           const meta = getTravelStyleMeta(trip.travelStyle);
           const Icon = meta.icon;
+          const shownActivities = trip.activities.slice(0, MAX_CARD_ACTIVITIES);
+          const hiddenActivityCount =
+            trip.activities.length - shownActivities.length;
 
           return (
             <Link
               key={trip.id}
               href={`/trips/${trip.id}`}
               style={{ animationDelay: `${index * 80}ms` }}
-              className="group animate-fade-in-up block overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:rotate-[-0.3deg] hover:shadow-xl dark:border-slate-800 dark:bg-slate-900"
+              className="group animate-fade-in-up flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:rotate-[-0.3deg] hover:shadow-xl dark:border-slate-800 dark:bg-slate-900"
             >
               <div className={`h-1.5 w-full bg-gradient-to-r ${meta.barClass}`} />
 
@@ -188,7 +195,7 @@ export default function UpcomingTrips({ trips }: { trips: Trip[] }) {
                 </span>
               </div>
 
-              <div className="p-5">
+              <div className="flex flex-1 flex-col p-5">
                 <h3 className="flex items-center gap-1 text-lg font-semibold text-slate-900 dark:text-slate-50">
                   <MapPinIcon className="h-4 w-4 shrink-0 text-orange-500" />
                   <span>
@@ -202,12 +209,12 @@ export default function UpcomingTrips({ trips }: { trips: Trip[] }) {
                   {formatDate(trip.startDate)} – {formatDate(trip.endDate)} ·{" "}
                   {getNights(trip)} nights
                 </p>
-                <p className="mt-3 text-sm text-slate-600 dark:text-slate-300">
+                <p className="mt-3 line-clamp-2 text-sm text-slate-600 dark:text-slate-300">
                   {trip.description}
                 </p>
 
                 <div className="mt-4 flex flex-wrap gap-2">
-                  {trip.activities.map((activity, i) => (
+                  {shownActivities.map((activity, i) => (
                     <span
                       key={activity}
                       className={`inline-block rounded-full px-3 py-1 text-xs font-medium ${
@@ -217,33 +224,42 @@ export default function UpcomingTrips({ trips }: { trips: Trip[] }) {
                       {activity}
                     </span>
                   ))}
+                  {hiddenActivityCount > 0 && (
+                    <span className="inline-block rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                      +{hiddenActivityCount} more
+                    </span>
+                  )}
                 </div>
 
-                <div className="mt-4 border-t border-slate-100 pt-3 dark:border-slate-800">
-                  <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
-                    <span>
-                      {formatCurrency(spent)} of{" "}
-                      {formatCurrency(trip.budget)}
-                    </span>
-                    <span
-                      className={`font-semibold ${
-                        overBudget
-                          ? "text-red-600 dark:text-red-400"
-                          : "text-orange-700 dark:text-orange-400"
-                      }`}
-                    >
-                      {percentSpent}%
-                    </span>
-                  </div>
-                  <div className="mt-2 h-1.5 w-full rounded-full bg-slate-100 dark:bg-slate-800">
-                    <div
-                      className={`h-1.5 rounded-full bg-gradient-to-r ${
-                        overBudget
-                          ? "from-red-500 to-red-600"
-                          : "from-orange-400 to-orange-600"
-                      }`}
-                      style={{ width: `${Math.min(percentSpent, 100)}%` }}
-                    />
+                {/* mt-auto pins the budget row to the bottom of the card, so
+                    bars line up across a row whatever the text above. */}
+                <div className="mt-auto pt-4">
+                  <div className="border-t border-slate-100 pt-3 dark:border-slate-800">
+                    <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+                      <span>
+                        {formatCurrency(spent)} of{" "}
+                        {formatCurrency(trip.budget)}
+                      </span>
+                      <span
+                        className={`font-semibold ${
+                          overBudget
+                            ? "text-red-600 dark:text-red-400"
+                            : "text-orange-700 dark:text-orange-400"
+                        }`}
+                      >
+                        {percentSpent}%
+                      </span>
+                    </div>
+                    <div className="mt-2 h-1.5 w-full rounded-full bg-slate-100 dark:bg-slate-800">
+                      <div
+                        className={`h-1.5 rounded-full bg-gradient-to-r ${
+                          overBudget
+                            ? "from-red-500 to-red-600"
+                            : "from-orange-400 to-orange-600"
+                        }`}
+                        style={{ width: `${Math.min(percentSpent, 100)}%` }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
