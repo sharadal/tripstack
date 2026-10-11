@@ -33,6 +33,7 @@ export default function HomeContent({ demoTrips }: { demoTrips: Trip[] }) {
   );
   const totalRemaining = totalBudget - totalSpent;
   const upcoming = nextDeparture(trips);
+  const upcomingDays = upcoming ? daysUntil(upcoming.startDate) : 0;
 
   return (
     <main className="flex-1 bg-stone-50 dark:bg-slate-950">
@@ -53,8 +54,11 @@ export default function HomeContent({ demoTrips }: { demoTrips: Trip[] }) {
         <div className="relative mx-auto max-w-6xl">
           <span className="animate-fade-in-up inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-1.5 text-xs font-semibold tracking-[0.15em] text-stone-100 uppercase ring-1 ring-white/25 backdrop-blur">
             <SparkleIcon className="h-3.5 w-3.5 text-amber-300" />
-            {trips.length} trips planned · {formatCurrency(totalBudget)}{" "}
-            budgeted
+            {trips.length} trips planned
+            <span className="hidden sm:inline">
+              {" "}
+              · {formatCurrency(totalBudget)} budgeted
+            </span>
           </span>
 
           <h1
@@ -112,10 +116,10 @@ export default function HomeContent({ demoTrips }: { demoTrips: Trip[] }) {
 
           {upcoming && (
             <div
-              className="animate-fade-in-up group mt-8 inline-flex max-w-md flex-wrap items-center gap-6 rounded-2xl bg-stone-50 px-6 py-5 text-slate-900 shadow-lg transition-transform duration-300 hover:-translate-y-1 sm:flex-nowrap dark:bg-slate-900 dark:text-slate-50"
+              className="animate-fade-in-up group mt-8 inline-flex max-w-md items-center gap-4 rounded-2xl bg-stone-50 px-6 py-5 text-slate-900 shadow-lg transition-transform duration-300 hover:-translate-y-1 sm:gap-6 dark:bg-slate-900 dark:text-slate-50"
               style={{ animationDelay: "240ms" }}
             >
-              <div>
+              <div className="min-w-0">
                 <p className="flex items-center gap-1.5 text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase dark:text-slate-400">
                   <PlaneIcon className="h-3.5 w-3.5 -rotate-45 text-orange-500" />
                   Next departure
@@ -128,12 +132,12 @@ export default function HomeContent({ demoTrips }: { demoTrips: Trip[] }) {
                   {formatDate(upcoming.endDate)}
                 </p>
               </div>
-              <div className="border-l border-slate-200 pl-6 dark:border-slate-700">
+              <div className="shrink-0 border-l border-slate-200 pl-4 sm:pl-6 dark:border-slate-700">
                 <p className="text-3xl font-bold text-orange-600 transition-transform duration-300 group-hover:scale-110 dark:text-orange-400">
-                  {daysUntil(upcoming.startDate)}
+                  {upcomingDays}
                 </p>
                 <p className="text-xs font-semibold tracking-[0.15em] text-slate-500 uppercase dark:text-slate-400">
-                  Days to go
+                  {upcomingDays === 1 ? "Day to go" : "Days to go"}
                 </p>
               </div>
             </div>

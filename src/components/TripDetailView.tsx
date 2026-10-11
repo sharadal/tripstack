@@ -1,9 +1,47 @@
+import type { ComponentType, ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { type Trip, formatDate, getNights } from "@/lib/trips";
 import CountdownBadge from "@/components/CountdownBadge";
 import BudgetPanel from "@/components/BudgetPanel";
 import { getTravelStyleMeta } from "@/lib/travelStyleMeta";
+import {
+  CalendarIcon,
+  CompassIcon,
+  SparkleIcon,
+} from "@/components/icons";
+
+const ACTIVITY_TINTS = [
+  "bg-amber-50 text-amber-900 dark:bg-amber-500/15 dark:text-amber-300",
+  "bg-orange-50 text-orange-900 dark:bg-orange-500/15 dark:text-orange-300",
+  "bg-rose-50 text-rose-900 dark:bg-rose-500/15 dark:text-rose-300",
+];
+
+// Heading outside, content in a card -- the same shape BudgetPanel uses,
+// so every section of the page reads the same way.
+function Section({
+  title,
+  icon: Icon,
+  iconClass,
+  children,
+}: {
+  title: string;
+  icon: ComponentType<{ className?: string }>;
+  iconClass: string;
+  children: ReactNode;
+}) {
+  return (
+    <>
+      <h2 className="mt-8 flex items-center gap-2 text-lg font-semibold text-slate-900 dark:text-slate-50">
+        <Icon className={`h-5 w-5 ${iconClass}`} />
+        {title}
+      </h2>
+      <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        {children}
+      </div>
+    </>
+  );
+}
 
 export default function TripDetailView({ trip }: { trip: Trip }) {
   const meta = getTravelStyleMeta(trip.travelStyle);
@@ -11,7 +49,7 @@ export default function TripDetailView({ trip }: { trip: Trip }) {
 
   return (
     <main className="flex-1 bg-stone-50 dark:bg-slate-950">
-      <div className="relative h-64 w-full sm:h-80">
+      <div className="relative h-80 w-full sm:h-[26rem]">
         {trip.image.startsWith("/") ? (
           <Image
             src={trip.image}
@@ -29,88 +67,102 @@ export default function TripDetailView({ trip }: { trip: Trip }) {
             className="absolute inset-0 h-full w-full object-cover"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-teal-950/70 via-teal-950/10 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-teal-950/90 via-teal-950/30 to-teal-950/20" />
         <div
           className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${meta.barClass}`}
         />
-        <span className="absolute right-4 top-4">
-          <CountdownBadge startDate={trip.startDate} />
-        </span>
+
+        <div className="relative mx-auto flex h-full max-w-2xl flex-col justify-between px-6 pt-6 pb-8">
+          <div className="flex items-center justify-between gap-4">
+            <Link
+              href="/#upcoming"
+              className="inline-flex items-center gap-1 rounded-full bg-white/15 px-4 py-1.5 text-sm font-medium text-white ring-1 ring-white/25 backdrop-blur transition hover:bg-white/25"
+            >
+              ← Back to trips
+            </Link>
+            <CountdownBadge startDate={trip.startDate} />
+          </div>
+
+          <div className="animate-fade-in-up">
+            <span
+              className={`inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold shadow-sm backdrop-blur ${meta.iconClass}`}
+            >
+              <StyleIcon className="h-3.5 w-3.5" />
+              <span className="text-slate-800">{trip.travelStyle}</span>
+            </span>
+            <h1 className="mt-3 font-serif text-4xl font-bold text-white sm:text-5xl">
+              {trip.destination}
+            </h1>
+            <p className="mt-2 flex items-center gap-1.5 text-stone-200">
+              <CalendarIcon className="h-4 w-4 shrink-0 text-amber-300" />
+              {formatDate(trip.startDate)} – {formatDate(trip.endDate)} ·{" "}
+              {getNights(trip)} nights
+            </p>
+          </div>
+        </div>
       </div>
 
-      <section className="mx-auto max-w-2xl px-6 py-12">
-        <Link
-          href="/#upcoming"
-          className="inline-flex items-center gap-1 text-sm font-medium text-slate-500 transition hover:text-teal-900 dark:text-slate-400 dark:hover:text-amber-300"
-        >
-          ← Back to trips
-        </Link>
-
-        <h1 className="mt-4 font-serif text-3xl font-bold text-slate-900 dark:text-slate-50">
-          {trip.destination}
-        </h1>
-
-        <p className="mt-2 text-slate-500 dark:text-slate-400">
-          {formatDate(trip.startDate)} – {formatDate(trip.endDate)} ·{" "}
-          {getNights(trip)} nights
-        </p>
-
+      <section className="mx-auto max-w-2xl px-6 pt-10 pb-12">
         {trip.description && (
-          <p className="mt-4 text-slate-600 dark:text-slate-300">{trip.description}</p>
+          <p className="text-lg leading-relaxed text-slate-700 dark:text-slate-200">
+            {trip.description}
+          </p>
         )}
 
-        <div className="mt-4 flex flex-wrap gap-2">
-          <span
-            className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold shadow-sm ${meta.badgeClass}`}
-          >
-            <StyleIcon className="h-3.5 w-3.5" />
-            {trip.travelStyle}
-          </span>
-        </div>
-
         {trip.activities.length > 0 && (
-          <>
-            <h2 className="mt-8 text-lg font-semibold text-slate-900 dark:text-slate-50">
-              Activities
-            </h2>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {trip.activities.map((activity) => (
+          <Section
+            title="Activities"
+            icon={CompassIcon}
+            iconClass="text-orange-500"
+          >
+            <div className="flex flex-wrap gap-2">
+              {trip.activities.map((activity, i) => (
                 <span
                   key={activity}
-                  className="inline-block rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-900 dark:bg-amber-500/15 dark:text-amber-300"
+                  className={`inline-block rounded-full px-3 py-1 text-sm font-medium ${
+                    ACTIVITY_TINTS[i % ACTIVITY_TINTS.length]
+                  }`}
                 >
                   {activity}
                 </span>
               ))}
             </div>
-          </>
+          </Section>
         )}
 
         {trip.packingList && trip.packingList.length > 0 && (
-          <>
-            <h2 className="mt-8 text-lg font-semibold text-slate-900 dark:text-slate-50">
-              Packing list
-            </h2>
-            <div className="mt-3 flex flex-wrap gap-2">
+          <Section
+            title="Packing list"
+            icon={SparkleIcon}
+            iconClass="text-amber-500"
+          >
+            <ul className="grid gap-x-6 gap-y-2.5 sm:grid-cols-2">
               {trip.packingList.map((item) => (
-                <span
+                <li
                   key={item}
-                  className="inline-block rounded-full bg-white px-3 py-1 text-xs font-medium text-slate-900 shadow-sm dark:bg-slate-800 dark:text-slate-100"
+                  className="flex items-center gap-2.5 text-slate-700 dark:text-slate-200"
                 >
+                  <span
+                    aria-hidden="true"
+                    className="h-4 w-4 shrink-0 rounded-md border-2 border-teal-700/40 dark:border-teal-400/50"
+                  />
                   {item}
-                </span>
+                </li>
               ))}
-            </div>
-          </>
+            </ul>
+          </Section>
         )}
 
         {trip.notes && (
-          <>
-            <h2 className="mt-8 text-lg font-semibold text-slate-900 dark:text-slate-50">
-              Notes
-            </h2>
-            <p className="mt-3 text-slate-600 dark:text-slate-300">{trip.notes}</p>
-          </>
+          <Section
+            title="Notes"
+            icon={CalendarIcon}
+            iconClass="text-teal-700 dark:text-teal-400"
+          >
+            <p className="whitespace-pre-line text-slate-700 dark:text-slate-200">
+              {trip.notes}
+            </p>
+          </Section>
         )}
 
         <BudgetPanel trip={trip} />
