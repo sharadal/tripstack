@@ -49,6 +49,16 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
             </p>
           )}
           <GoogleSignInButton next={next} />
+          <p className="mt-5 text-xs text-slate-500 dark:text-slate-400">
+            By signing in you agree to how we handle your data in our{" "}
+            <Link
+              href="/privacy"
+              className="font-medium underline underline-offset-2 transition hover:text-teal-900 dark:hover:text-amber-300"
+            >
+              privacy policy
+            </Link>
+            .
+          </p>
         </div>
 
         <Link

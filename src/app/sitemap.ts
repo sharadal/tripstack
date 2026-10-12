@@ -6,7 +6,8 @@ import { SITE_URL } from "@/lib/site";
 // (like the rest of the site) instead of freezing it at build time.
 export const dynamic = "force-dynamic";
 
-// Only public pages belong here: the homepage and the showcase trips.
+// Only public pages belong here: the homepage, the privacy policy and the
+// showcase trips.
 // Personal trips, profile, settings and admin pages are deliberately left out.
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const home: MetadataRoute.Sitemap[number] = {
@@ -14,11 +15,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "weekly",
     priority: 1,
   };
+  const privacy: MetadataRoute.Sitemap[number] = {
+    url: `${SITE_URL}/privacy`,
+    changeFrequency: "yearly",
+    priority: 0.3,
+  };
 
   try {
     const trips = await getTrips();
     return [
       home,
+      privacy,
       ...trips.map((trip) => ({
         url: `${SITE_URL}/trips/${trip.id}`,
         changeFrequency: "monthly" as const,
@@ -26,7 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       })),
     ];
   } catch {
-    // A Supabase hiccup shouldn't break the sitemap -- fall back to home.
-    return [home];
+    // A Supabase hiccup shouldn't break the sitemap -- fall back to the static pages.
+    return [home, privacy];
   }
 }

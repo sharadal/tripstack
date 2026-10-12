@@ -116,7 +116,15 @@ export default function Footer({ demoTrips }: { demoTrips: Trip[] }) {
             © {new Date().getFullYear()} TripStack · Planned with care,
             packed at the last minute.
           </p>
-          <p>Your trips are saved in this browser.</p>
+          <p>
+            Your trips are saved in this browser ·{" "}
+            <Link
+              href="/privacy"
+              className="text-stone-300 underline decoration-stone-500 underline-offset-2 transition hover:text-amber-300"
+            >
+              Privacy
+            </Link>
+          </p>
         </div>
       </div>
     </footer>

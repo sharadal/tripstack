@@ -6,3 +6,7 @@ export const SITE_URL = (
 ).replace(/\/+$/, "");
 
 export const SITE_NAME = "TripStack";
+
+// Where visitors can write about their data (shown on /privacy). Optional:
+// when NEXT_PUBLIC_CONTACT_EMAIL is unset the page omits the address.
+export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || undefined;
