@@ -17,7 +17,7 @@ export default function NotFound() {
         <p className="mt-6 text-xs font-semibold tracking-[0.2em] text-orange-700 uppercase dark:text-orange-400">
           404
         </p>
-        <h1 className="mt-3 font-serif text-3xl font-bold text-slate-900 sm:text-4xl dark:text-slate-50">
+        <h1 className="mt-3 font-serif text-3xl font-bold text-balance text-slate-900 sm:text-4xl dark:text-slate-50">
           This trip took a wrong turn
         </h1>
         <p className="mt-3 max-w-md text-slate-600 dark:text-slate-300">
@@ -25,7 +25,7 @@ export default function NotFound() {
           been moved, or the link might be out of date.
         </p>
 
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <div className="mt-8 flex flex-col items-center justify-center gap-2 sm:flex-row sm:gap-4">
           <Link
             href="/"
             className="inline-flex items-center justify-center gap-1.5 rounded-full bg-teal-950 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-teal-900 hover:shadow-md"
@@ -35,7 +35,7 @@ export default function NotFound() {
           </Link>
           <Link
             href="/trips/new"
-            className="text-sm font-medium text-slate-500 transition hover:text-teal-900 dark:text-slate-400 dark:hover:text-amber-300"
+            className="inline-flex min-h-11 items-center px-4 text-sm font-medium text-slate-500 transition hover:text-teal-900 dark:text-slate-400 dark:hover:text-amber-300"
           >
             Plan a new trip instead
           </Link>
