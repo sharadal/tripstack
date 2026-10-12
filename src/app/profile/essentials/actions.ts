@@ -3,7 +3,13 @@
 import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-export type EssentialsActionState = { error?: string; success?: string };
+// `error` is a validation problem the user can fix in the form (shown
+// inline); `failure` is a save that went wrong on our side (shown as a toast).
+export type EssentialsActionState = {
+  error?: string;
+  failure?: string;
+  success?: string;
+};
 
 // These mirror the check constraints in supabase/essentials.sql (plus the
 // per-item limit, which is only enforced here) so users get a friendly
@@ -47,14 +53,14 @@ export async function createEssentialsList(
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: SESSION_EXPIRED };
+  if (!user) return { failure: SESSION_EXPIRED };
 
   const list = readList(formData);
   if ("error" in list) return list;
 
   // user_id is filled in by the database from the signed-in user.
   const { error } = await supabase.from("essentials_lists").insert(list);
-  if (error) return { error: "Couldn't save your list — please try again." };
+  if (error) return { failure: "Couldn't save your list — please try again." };
 
   revalidatePath("/profile");
   return { success: "List saved." };
@@ -68,10 +74,10 @@ export async function updateEssentialsList(
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: SESSION_EXPIRED };
+  if (!user) return { failure: SESSION_EXPIRED };
 
   const id = String(formData.get("id") ?? "");
-  if (!id) return { error: "Missing list id." };
+  if (!id) return { failure: "Missing list id." };
 
   const list = readList(formData);
   if ("error" in list) return list;
@@ -83,29 +89,34 @@ export async function updateEssentialsList(
     .eq("user_id", user.id)
     .select("id");
 
-  if (error) return { error: "Couldn't save your list — please try again." };
+  if (error) return { failure: "Couldn't save your list — please try again." };
   if (!saved?.length) {
-    return { error: "We couldn't find that list — please refresh the page." };
+    return { failure: "We couldn't find that list — please refresh the page." };
   }
 
   revalidatePath("/profile");
   return { success: "List saved." };
 }
 
-export async function deleteEssentialsList(formData: FormData) {
+export async function deleteEssentialsList(
+  formData: FormData,
+): Promise<EssentialsActionState> {
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return;
+  if (!user) return { failure: SESSION_EXPIRED };
 
   const id = String(formData.get("id") ?? "");
-  if (!id) return;
+  if (!id) return { failure: "Missing list id." };
 
-  await supabase
+  const { error } = await supabase
     .from("essentials_lists")
     .delete()
     .eq("id", id)
     .eq("user_id", user.id);
+  if (error) return { failure: "Couldn't delete your list — please try again." };
+
   revalidatePath("/profile");
+  return { success: "List deleted." };
 }

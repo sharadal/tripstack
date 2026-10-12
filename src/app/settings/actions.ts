@@ -5,7 +5,13 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { AVATAR_BUCKET } from "@/lib/profile";
 import { AVATAR_TYPES, avatarFileError } from "@/lib/avatar";
 
-export type ProfileActionState = { error?: string; success?: string };
+// `error` is a validation problem the user can fix in the form (shown
+// inline); `failure` is a save that went wrong on our side (shown as a toast).
+export type ProfileActionState = {
+  error?: string;
+  failure?: string;
+  success?: string;
+};
 
 // Editable text fields and their max lengths. These mirror the check
 // constraints in supabase/profiles.sql so users get a friendly message
@@ -53,7 +59,7 @@ export async function updateProfile(
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: "Your session has expired — please sign in again." };
+  if (!user) return { failure: "Your session has expired — please sign in again." };
 
   const updates: Partial<Record<TextField | "avatar_url", string | null>> = {};
 
@@ -91,7 +97,7 @@ export async function updateProfile(
       .from(AVATAR_BUCKET)
       .upload(uploadedPath, avatar, { contentType: avatar.type });
     if (uploadError) {
-      return { error: "Couldn't upload your avatar — please try again." };
+      return { failure: "Couldn't upload your avatar — please try again." };
     }
 
     updates.avatar_url = supabase.storage
@@ -118,7 +124,7 @@ export async function updateProfile(
       await supabase.storage.from(AVATAR_BUCKET).remove([uploadedPath]);
     }
     return {
-      error: error
+      failure: error
         ? "Couldn't save your profile — please try again."
         : "We couldn't find your profile — please refresh the page.",
     };

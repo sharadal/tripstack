@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { supabase } from "@/lib/supabaseClient";
 import { PlaneIcon, SparkleIcon } from "@/components/icons";
 
@@ -15,14 +16,12 @@ const inputClass =
 type Errors = {
   firstName?: string;
   email?: string;
-  form?: string;
 };
 
 export default function Newsletter() {
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState<Errors>({});
-  const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -51,41 +50,16 @@ export default function Newsletter() {
     setSubmitting(false);
 
     if (error && error.code !== UNIQUE_VIOLATION) {
-      setErrors({ form: "Something went wrong — please try again." });
+      toast.error("Couldn't subscribe you — please try again.");
       return;
     }
 
-    setSubmitted(true);
+    toast.success("You're on the list!", {
+      description: "Keep an eye on your inbox for travel ideas and trip-planning tips.",
+    });
     setFirstName("");
     setEmail("");
   };
-
-  if (submitted) {
-    return (
-      <div
-        role="status"
-        className="rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm sm:p-10 dark:border-slate-800 dark:bg-slate-900"
-      >
-        <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-teal-950 text-white">
-          <SparkleIcon className="h-5 w-5 text-amber-300" />
-        </span>
-        <h2 className="mt-4 font-serif text-2xl font-bold text-slate-900 dark:text-slate-50">
-          You&apos;re on the list!
-        </h2>
-        <p className="mx-auto mt-2 max-w-sm text-slate-600 dark:text-slate-300">
-          Thanks for subscribing — keep an eye on your inbox for travel
-          ideas and trip-planning tips.
-        </p>
-        <button
-          type="button"
-          onClick={() => setSubmitted(false)}
-          className="mt-6 text-sm font-medium text-slate-500 transition hover:text-teal-900 dark:text-slate-400 dark:hover:text-amber-300"
-        >
-          Subscribe another email
-        </button>
-      </div>
-    );
-  }
 
   return (
     <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10 dark:border-slate-800 dark:bg-slate-900">
@@ -177,15 +151,6 @@ export default function Newsletter() {
             )}
           </div>
         </div>
-
-        {errors.form && (
-          <p
-            role="alert"
-            className="mt-4 rounded-2xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700 dark:bg-red-950/40 dark:text-red-300"
-          >
-            {errors.form}
-          </p>
-        )}
 
         <button
           type="submit"

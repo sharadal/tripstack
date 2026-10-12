@@ -1,6 +1,7 @@
 "use client";
 
 import { startTransition, useActionState, useEffect, useState } from "react";
+import { toast } from "sonner";
 import type { EssentialsList } from "@/lib/essentials";
 import TagList from "@/components/TagList";
 import {
@@ -45,6 +46,13 @@ export default function EssentialsListForm({
       setItems([]);
     }
   }
+
+  // Save results are toasts; validation errors stay next to the form. Kept
+  // apart from the onSaved effect so a new onSaved prop can't re-toast.
+  useEffect(() => {
+    if (state.success) toast.success(state.success);
+    if (state.failure) toast.error(state.failure);
+  }, [state]);
 
   // Telling the parent (e.g. to close the edit form) has to wait for an
   // effect: a parent can't be updated while this component renders.
@@ -115,11 +123,6 @@ export default function EssentialsListForm({
           </button>
         )}
         <div aria-live="polite">
-          {!pending && state.success && !list && (
-            <p className="rounded-full bg-teal-50 px-4 py-2 text-sm font-medium text-teal-800 dark:bg-teal-950/50 dark:text-teal-300">
-              {state.success}
-            </p>
-          )}
           {!pending && state.error && (
             <p
               role="alert"

@@ -5,6 +5,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Newsletter from "@/components/Newsletter";
+import Toaster from "@/components/Toaster";
 import { getTrips } from "@/lib/trips";
 import { isCurrentUserAdmin } from "@/lib/admin";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
@@ -106,6 +107,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           <Newsletter />
         </section>
         <Footer demoTrips={trips} />
+        <Toaster />
       </body>
       {process.env.NODE_ENV === "production" && (
         <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />

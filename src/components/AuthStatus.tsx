@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { toast } from "sonner";
 import type { User } from "@supabase/supabase-js";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { avatarUrl, displayName, useAuthUser } from "@/hooks/useAuthUser";
@@ -33,22 +34,21 @@ function Avatar({ user, size }: { user: User; size: string }) {
 function useSignOut() {
   const router = useRouter();
   const [signingOut, setSigningOut] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const signOut = async () => {
     setSigningOut(true);
-    setError(null);
     const { error } = await createSupabaseBrowserClient().auth.signOut();
     setSigningOut(false);
     if (error) {
-      setError("Couldn't sign out — please try again.");
+      // A toast rather than inline text: the mobile menu closes right after.
+      toast.error("Couldn't sign out — please try again.");
       return;
     }
     // Re-render server components so protected pages notice the sign-out.
     router.refresh();
   };
 
-  return { signOut, signingOut, error };
+  return { signOut, signingOut };
 }
 
 const menuLinkClass =
@@ -89,7 +89,7 @@ function AccountLinks({
 export function AuthStatus({ isAdmin }: { isAdmin: boolean }) {
   const { user, loading } = useAuthUser();
   const pathname = usePathname();
-  const { signOut, signingOut, error } = useSignOut();
+  const { signOut, signingOut } = useSignOut();
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -164,11 +164,6 @@ export function AuthStatus({ isAdmin }: { isAdmin: boolean }) {
           >
             {signingOut ? "Logging out…" : "Logout"}
           </button>
-          {error && (
-            <p role="alert" className="mt-2 text-xs text-red-600 dark:text-red-400">
-              {error}
-            </p>
-          )}
         </div>
       )}
     </div>
@@ -185,7 +180,7 @@ export function MobileAuthStatus({
 }) {
   const { user, loading } = useAuthUser();
   const pathname = usePathname();
-  const { signOut, signingOut, error } = useSignOut();
+  const { signOut, signingOut } = useSignOut();
 
   if (loading) return null;
 
@@ -228,11 +223,6 @@ export function MobileAuthStatus({
       >
         {signingOut ? "Logging out…" : "Logout"}
       </button>
-      {error && (
-        <p role="alert" className="mt-2 text-xs text-red-600 dark:text-red-400">
-          {error}
-        </p>
-      )}
     </div>
   );
 }

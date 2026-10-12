@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
+import { toast } from "sonner";
 import { createSubscriber, type ActionState } from "./actions";
 import { PlaneIcon } from "@/components/icons";
 
@@ -14,6 +15,12 @@ export default function AddSubscriberForm() {
     createSubscriber,
     initialState,
   );
+
+  // Results are toasts; fixable problems stay inline under the form.
+  useEffect(() => {
+    if (state.success) toast.success(state.success);
+    if (state.failure) toast.error(state.failure);
+  }, [state]);
 
   return (
     <form

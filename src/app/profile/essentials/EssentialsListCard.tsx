@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import type { EssentialsList } from "@/lib/essentials";
 import { deleteEssentialsList } from "./actions";
 import EssentialsListForm from "./EssentialsListForm";
@@ -38,7 +39,11 @@ export default function EssentialsListCard({ list }: { list: EssentialsList }) {
             Edit
           </button>
           <form
-            action={deleteEssentialsList}
+            action={async (formData) => {
+              const result = await deleteEssentialsList(formData);
+              if (result.failure) toast.error(result.failure);
+              if (result.success) toast.success(result.success);
+            }}
             onSubmit={(e) => {
               if (
                 !window.confirm(

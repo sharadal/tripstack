@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
+import { toast } from "sonner";
 import { deleteSubscriber, updateSubscriber, type ActionState } from "./actions";
 
 type Subscriber = {
@@ -34,14 +35,19 @@ export default function SubscriberRow({
     initialState,
   );
 
-  // A successful save produces a new (though value-equal) state object.
-  // Close the edit form in response, following React's guidance to adjust
-  // state during render instead of in an effect.
+  // Close the edit form after a successful save, following React's
+  // guidance to adjust state during render instead of in an effect.
   const [handledState, setHandledState] = useState(state);
   if (state !== handledState) {
     setHandledState(state);
-    if (!state.error) setEditing(false);
+    if (state.success) setEditing(false);
   }
+
+  // Results are toasts; fixable problems stay inline in the edit row.
+  useEffect(() => {
+    if (state.success) toast.success(state.success);
+    if (state.failure) toast.error(state.failure);
+  }, [state]);
 
   if (editing) {
     return (
@@ -112,7 +118,11 @@ export default function SubscriberRow({
             Edit
           </button>
           <form
-            action={deleteSubscriber}
+            action={async (formData) => {
+              const result = await deleteSubscriber(formData);
+              if (result.failure) toast.error(result.failure);
+              if (result.success) toast.success(result.success);
+            }}
             onSubmit={(e) => {
               if (
                 !window.confirm(

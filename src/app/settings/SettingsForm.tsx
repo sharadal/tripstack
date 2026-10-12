@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { toast } from "sonner";
 import type { Profile } from "@/lib/profile";
 import { avatarFileError } from "@/lib/avatar";
 import ProfileAvatar from "@/components/ProfileAvatar";
@@ -93,6 +94,12 @@ export default function SettingsForm({
       setFileInputKey((key) => key + 1);
     }
   }
+
+  // Save results are toasts; validation errors stay next to the form.
+  useEffect(() => {
+    if (state.success) toast.success(state.success);
+    if (state.failure) toast.error(state.failure);
+  }, [state]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -235,11 +242,6 @@ export default function SettingsForm({
           {pending ? "Saving…" : "Save changes"}
         </button>
         <div aria-live="polite">
-          {!pending && state.success && (
-            <p className="rounded-full bg-teal-50 px-4 py-2 text-sm font-medium text-teal-800 dark:bg-teal-950/50 dark:text-teal-300">
-              {state.success}
-            </p>
-          )}
           {!pending && state.error && (
             <p role="alert" className="rounded-full bg-red-50 px-4 py-2 text-sm font-medium text-red-700 dark:bg-red-950/40 dark:text-red-300">
               {state.error}

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "sonner";
 import { TRIP_TYPES } from "@/lib/trips";
 import { getTravelStyleMeta } from "@/lib/travelStyleMeta";
 import { addPersonalTrip } from "@/lib/personalTrips";
@@ -54,20 +55,29 @@ export default function NewTripForm() {
     }
 
     setPending(true);
-    const trip = addPersonalTrip({
-      destination,
-      country,
-      startDate,
-      endDate,
-      travelStyle,
-      budget,
-      image: image || undefined,
-      description,
-      activities,
-      packingList,
-      notes,
-    });
+    let trip;
+    try {
+      trip = addPersonalTrip({
+        destination,
+        country,
+        startDate,
+        endDate,
+        travelStyle,
+        budget,
+        image: image || undefined,
+        description,
+        activities,
+        packingList,
+        notes,
+      });
+    } catch {
+      // Trips live in localStorage, which can be full or blocked.
+      setPending(false);
+      toast.error("Couldn't save your trip — please try again.");
+      return;
+    }
 
+    toast.success(`${destination} trip saved.`);
     router.push(`/trips/${trip.id}`);
   };
 
