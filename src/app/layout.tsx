@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Playfair_Display } from "next/font/google";
 import Script from "next/script";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Newsletter from "@/components/Newsletter";
@@ -18,6 +19,10 @@ const playfair = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
 });
+
+// Google Analytics 4. Only loaded in production builds so local `next dev`
+// sessions don't show up in the reports.
+const GA_MEASUREMENT_ID = "G-4N1W3VCS8P";
 
 const defaultTitle = "TripStack — Plan your next adventure";
 const defaultDescription =
@@ -102,6 +107,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         </section>
         <Footer demoTrips={trips} />
       </body>
+      {process.env.NODE_ENV === "production" && (
+        <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />
+      )}
     </html>
   );
 }
