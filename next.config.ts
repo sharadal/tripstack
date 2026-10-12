@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    // AVIF is ~20% smaller than WebP; browsers without it still get WebP.
+    formats: ["image/avif", "image/webp"],
+  },
   experimental: {
     serverActions: {
       // Avatar uploads on /settings go through a Server Action. Files are

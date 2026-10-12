@@ -182,7 +182,7 @@ export default function UpcomingTrips({ trips }: { trips: Trip[] }) {
                     src={trip.image}
                     alt={trip.destination}
                     fill
-                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    sizes="(min-width: 1152px) 352px, (min-width: 1024px) calc(33vw - 32px), (min-width: 640px) calc(50vw - 36px), calc(100vw - 48px)"
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 ) : (

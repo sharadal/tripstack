@@ -236,7 +236,7 @@ export default function TripQuiz({ trips }: { trips: Trip[] }) {
               alt={isActive ? photo.alt : ""}
               aria-hidden={!isActive}
               fill
-              sizes="(min-width: 768px) 50vw, 100vw"
+              sizes="(min-width: 1152px) 552px, (min-width: 768px) calc(50vw - 24px), calc(100vw - 48px)"
               className={`${photoLayerClass} ${
                 isActive
                   ? "scale-100 opacity-100"
@@ -253,7 +253,7 @@ export default function TripQuiz({ trips }: { trips: Trip[] }) {
               src={resultImage}
               alt={resultAlt}
               fill
-              sizes="(min-width: 768px) 50vw, 100vw"
+              sizes="(min-width: 1152px) 552px, (min-width: 768px) calc(50vw - 24px), calc(100vw - 48px)"
               className="animate-fade-in-up object-cover"
             />
           ) : (

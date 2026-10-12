@@ -55,7 +55,8 @@ export default function TripDetailView({ trip }: { trip: Trip }) {
             src={trip.image}
             alt={trip.destination}
             fill
-            priority
+            loading="eager"
+            fetchPriority="high"
             sizes="100vw"
             className="object-cover"
           />
